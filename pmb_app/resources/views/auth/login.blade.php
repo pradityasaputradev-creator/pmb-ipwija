@@ -33,22 +33,22 @@
                     </div>
 
                     <div>
-                        <div class="flex flex-wrap items-baseline gap-2">
+                        <div class="flex flex-wrap items-baseline gap-2.5">
                             <span class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
                                 PMB
                             </span>
-                            <span class="text-3xl sm:text-4xl font-extrabold tracking-tight text-amber-400">
+                            <span class="text-3xl sm:text-4xl font-extrabold tracking-tight text-sky-200">
                                 IPWIJA
                             </span>
                         </div>
-                        <p class="text-xs sm:text-sm font-medium text-amber-200/95 tracking-wide">
+                        <p class="mt-1 text-xs sm:text-sm font-medium text-slate-200 tracking-wide">
                             Portal Penerimaan Mahasiswa Baru Universitas IPWIJA
                         </p>
                     </div>
 
                     <!-- Deskripsi Singkat Gaya SIMASTER -->
-                    <p class="text-sm sm:text-base text-slate-200 max-w-xl leading-relaxed">
-                        Sistem informasi <span class="text-amber-300 font-semibold">Pendaftaran, Seleksi, dan Layanan Calon Mahasiswa Baru</span>, untuk mendukung proses penerimaan mahasiswa yang transparan, cepat, dan terintegrasi di <span class="text-amber-300 font-semibold">Universitas IPWIJA</span>.
+                    <p class="text-sm sm:text-base text-slate-200/95 max-w-xl leading-relaxed">
+                        Sistem informasi <span class="text-white font-semibold">Pendaftaran, Seleksi, dan Layanan Calon Mahasiswa Baru</span>, untuk mendukung proses penerimaan mahasiswa yang transparan, cepat, dan terintegrasi di <span class="text-white font-semibold">Universitas IPWIJA</span>.
                     </p>
                 </div>
 
@@ -83,7 +83,7 @@
 
                 <!-- Kredit Kecil -->
                 <div class="pt-1 text-xs text-slate-300/90">
-                    Dibuat dengan <span class="text-rose-400">♥</span> untuk <span class="text-amber-300 font-medium">Universitas IPWIJA</span>
+                    Dibuat dengan <span class="text-rose-400">♥</span> untuk <span class="text-white font-medium">Universitas IPWIJA</span>
                 </div>
             </div>
 
@@ -122,7 +122,7 @@
                                 required
                                 autofocus
                                 autocomplete="username"
-                                placeholder="Masukkan email akun Anda"
+                                placeholder="Masukan Email Anda"
                                 class="w-full rounded-lg border-slate-300 text-sm py-2.5 px-3.5 focus:border-sky-600 focus:ring-sky-600"
                             >
                             @error('email')
@@ -140,7 +140,7 @@
                                 name="password"
                                 required
                                 autocomplete="current-password"
-                                placeholder="Masukkan kata sandi"
+                                placeholder="Masukan Password Anda"
                                 class="w-full rounded-lg border-slate-300 text-sm py-2.5 px-3.5 focus:border-sky-600 focus:ring-sky-600"
                             >
                             @error('password')
