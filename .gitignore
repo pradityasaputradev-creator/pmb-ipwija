@@ -1,0 +1,8 @@
+﻿.env
+pmb_app/.env
+pmb_app/vendor/
+pmb_app/node_modules/
+pmb_app/storage/*.key
+pmb_app/storage/logs/*.log
+pmb_app/bootstrap/cache/*.php
+n8n_data/
