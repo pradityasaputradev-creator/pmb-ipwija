@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\KeluargaController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -29,8 +30,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/keluarga', [ProfileController::class, 'keluarga'])->name('keluarga.index');
-    Route::post('/profile/keluarga', [ProfileController::class, 'updateKeluarga'])->name('profile.keluarga.store');
+    Route::get('/keluarga', [KeluargaController::class, 'keluarga'])->name('keluarga.index');
+    Route::post('/profile/keluarga', [KeluargaController::class, 'updateKeluarga'])->name('profile.keluarga.store');
 });
 
 require __DIR__.'/auth.php';
