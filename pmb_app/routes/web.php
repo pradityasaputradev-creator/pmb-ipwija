@@ -17,13 +17,16 @@ Route::get('/admin/dashboard', function (Request $request) {
         abort(403, 'Akses khusus Admin PMB.');
     }
 
-    return view('dashboard');
+    return view('admin.dashboard');
 })->middleware(['auth'])->name('admin.dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/keluarga', [ProfileController::class, 'keluarga'])->name('keluarga.index');
+    Route::post('/profile/keluarga', [ProfileController::class, 'updateKeluarga'])->name('profile.keluarga.store');
 });
 
 require __DIR__.'/auth.php';
