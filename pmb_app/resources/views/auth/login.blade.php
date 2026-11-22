@@ -68,7 +68,7 @@
                     </a>
 
                     <a
-                        href="#info-prodi"
+                        href="{{ route('program-studi.index') }}"
                         class="inline-flex items-center gap-2.5 rounded-lg bg-slate-950/90 hover:bg-slate-900 border border-white/25 px-4 py-2.5 text-left transition shadow-md"
                     >
                         <span class="h-8 w-8 rounded-md bg-sky-400/20 text-sky-300 flex items-center justify-center font-bold text-sm">
@@ -225,5 +225,7 @@
     </div>
 </body>
 </html>
+
+
 
 
