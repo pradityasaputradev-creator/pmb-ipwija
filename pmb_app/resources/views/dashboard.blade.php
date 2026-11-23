@@ -1,12 +1,250 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal Calon Mahasiswa - PMB Universitas IPWIJA</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #eef3f8;
+            color: #1e293b;
+        }
+        .pmb-header {
+            background-color: #08467d;
+            color: #ffffff;
+        }
+        .pmb-container {
+            max-width: 1020px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        .pmb-topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 15px 0 13px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+        }
+        .pmb-logo-img {
+            width: 42px;
+            height: 42px;
+            border-radius: 9999px;
+            object-fit: contain;
+            background-color: #ffffff;
+            padding: 2px;
+            flex-shrink: 0;
+        }
+        .pmb-univ-title {
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+            color: #ffffff;
+            line-height: 1.2;
+        }
+        .pmb-univ-sub {
+            font-size: 12px;
+            color: #dbeafe;
+            margin-top: 2px;
+        }
+        .pmb-btn-nav {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 13px;
+            border-radius: 6px;
+            background-color: #125894;
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .pmb-btn-nav:hover {
+            background-color: #1969ae;
+        }
+        .pmb-welcome-row {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 18px 0 16px;
+            flex-wrap: wrap;
+        }
+        .pmb-welcome-title {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.2;
+        }
+        .pmb-welcome-sub {
+            margin: 4px 0 0;
+            font-size: 12.5px;
+            color: #dbeafe;
+        }
+        .pmb-welcome-sub strong {
+            color: #ffffff;
+            font-weight: 700;
+        }
+        .pmb-meta-bar {
+            background-color: #063560;
+            border-top: 1px solid rgba(255, 255, 255, 0.14);
+            color: #dbeafe;
+            font-size: 11.5px;
+        }
+        .pmb-meta-bar strong {
+            color: #ffffff;
+            font-weight: 700;
+        }
+        .pmb-main {
+            max-width: 1020px;
+            margin: 0 auto;
+            padding: 22px 24px 36px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .pmb-card {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px 22px;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+        }
+        .pmb-link-blue {
+            color: #08467d;
+            font-weight: 700;
+            text-decoration: none;
+        }
+        .pmb-link-blue:hover {
+            color: #125894;
+            text-decoration: underline;
+        }
+        .pmb-avatar-box {
+            width: 96px;
+            height: 112px;
+            border-radius: 10px;
+            border: 1px solid #cbd5e1;
+            background-color: #eef3f8;
+            color: #08467d;
+            font-size: 26px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .pmb-progress-circle {
+            width: 44px;
+            height: 44px;
+            border-radius: 9999px;
+            border: 2px solid #08467d;
+            color: #08467d;
+            font-size: 12px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .pmb-icon-blue {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background-color: #dbeafe;
+            color: #08467d;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .pmb-tab-head {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border-radius: 10px 10px 0 0;
+            border: 1px solid #e2e8f0;
+            border-bottom: none;
+            background-color: #ffffff;
+            color: #08467d;
+            font-size: 12.5px;
+            font-weight: 800;
+        }
+        .pmb-tab-body {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 0 10px 10px 10px;
+            padding: 20px 22px;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+        }
+        .pmb-pill-blue {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            border: 1px solid #bfdbfe;
+            background-color: #eff6ff;
+            color: #08467d;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .pmb-table-head {
+            background-color: #08467d;
+            color: #ffffff;
+        }
+        .pmb-btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 15px;
+            border-radius: 6px;
+            background-color: #08467d;
+            border: 1px solid #08467d;
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .pmb-btn-primary:hover {
+            background-color: #063560;
+        }
+        .pmb-step-active {
+            border: 1px solid #bfdbfe;
+            background-color: #f0f7ff;
+        }
+        .pmb-step-num-active {
+            width: 24px;
+            height: 24px;
+            border-radius: 9999px;
+            background-color: #08467d;
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .pmb-step-badge-active {
+            border-radius: 5px;
+            background-color: #dbeafe;
+            color: #08467d;
+            padding: 2px 8px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+    </style>
 </head>
-<body class="min-h-screen bg-[#f3f6fa] text-slate-800 antialiased">
+<body>
     @php
         $user = auth()->user();
         $nama = $user?->name ?? 'Calon Mahasiswa';
@@ -22,37 +260,34 @@
         };
     @endphp
 
-    <!-- Top Header & Banner (Mirip Struktur Referensi, Nuansa Biru IPWIJA) -->
-    <header class="bg-gradient-to-b from-[#0b4f8a] to-[#083b69] text-white shadow-sm">
-        <div class="mx-auto max-w-5xl px-4 pt-4 pb-3 sm:px-6">
-            <div class="flex items-start justify-between gap-3">
-                <div class="w-24">
-                    <img src="{{ asset('images/logo-ipwija-header.png') }}" alt="Logo IPWIJA" class="h-10 w-10 rounded-full bg-white p-1 object-contain">
+    <header class="pmb-header">
+        <div class="pmb-container">
+            <div class="pmb-topbar">
+                <div style="width:110px;">
+                    <img src="{{ asset('images/logo-ipwija-header.png') }}" alt="Logo IPWIJA" class="pmb-logo-img">
                 </div>
 
-                <div class="text-center">
-                    <div class="text-base font-extrabold tracking-wide sm:text-xl">UNIVERSITAS IPWIJA</div>
-                    <div class="text-xs text-sky-100 sm:text-sm">Portal Calon Mahasiswa - Tahun Akademik 2026/2027</div>
+                <div style="text-align:center;">
+                    <div class="pmb-univ-title">UNIVERSITAS IPWIJA</div>
+                    <div class="pmb-univ-sub">Portal Calon Mahasiswa - Tahun Akademik 2026/2027</div>
                 </div>
 
-                <div class="flex w-24 justify-end">
-                    <form method="POST" action="{{ route('logout') }}">
+                <div style="width:110px;display:flex;justify-content:flex-end;">
+                    <form method="POST" action="{{ route('logout') }}" style="margin:0;">
                         @csrf
-                        <button type="submit" class="rounded-lg border border-white/25 bg-white/10 px-2.5 py-1 text-[11px] font-semibold text-white transition hover:bg-white/20">
-                            Keluar
-                        </button>
+                        <button type="submit" class="pmb-btn-nav">Keluar</button>
                     </form>
                 </div>
             </div>
 
-            <div class="mt-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div class="pmb-welcome-row">
                 <div>
-                    <h1 class="text-xl font-bold tracking-tight sm:text-2xl">{{ $sapaanWaktu }}, {{ $nama }}!</h1>
-                    <p class="mt-0.5 text-xs text-sky-100">Status: <span class="font-semibold text-white">Calon Mahasiswa</span></p>
+                    <h1 class="pmb-welcome-title">{{ $sapaanWaktu }}, {{ $nama }}!</h1>
+                    <p class="pmb-welcome-sub">Status: <strong>Calon Mahasiswa</strong></p>
                 </div>
 
-                <div class="flex flex-wrap items-center gap-2 text-[11px] text-sky-100">
-                    <button type="button" onclick="window.location.reload()" class="inline-flex items-center gap-1.5 rounded-md border border-white/25 bg-white/10 px-2.5 py-1 font-semibold text-white transition hover:bg-white/20">
+                <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:11.5px;color:#dbeafe;">
+                    <button type="button" onclick="window.location.reload()" class="pmb-btn-nav">
                         <span>&#8635;</span>
                         <span>Refresh</span>
                     </button>
@@ -61,22 +296,20 @@
             </div>
         </div>
 
-        <div class="border-t border-white/15 bg-[#07335c] text-[11px] text-sky-100">
-            <div class="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-2 px-4 py-2 sm:px-6">
-                <div>Periode Akademik: <span class="font-semibold text-white">2026/2027</span></div>
-                <div>Semester: <span class="font-semibold text-white">Semester Ganjil</span></div>
+        <div class="pmb-meta-bar">
+            <div class="pmb-container" style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:8px;padding-bottom:8px;flex-wrap:wrap;">
+                <div>Periode Akademik: <strong>2026/2027</strong></div>
+                <div>Semester: <strong>Semester Ganjil</strong></div>
             </div>
         </div>
     </header>
 
-    <main class="mx-auto max-w-5xl space-y-5 px-4 py-6 sm:px-6">
-        <!-- Row 1: Informasi Profil & Kelengkapan Profil -->
+    <main class="pmb-main">
         <section class="grid grid-cols-1 gap-5 lg:grid-cols-12">
-            <!-- Informasi Profil -->
-            <div class="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-2xs lg:col-span-6">
+            <div class="pmb-card lg:col-span-6">
                 <div class="mb-4 flex items-center justify-between">
                     <h2 class="text-base font-bold text-slate-900">Informasi Profil</h2>
-                    <a href="{{ route('profile.edit') }}" class="inline-flex items-center gap-1 text-xs font-semibold text-[#0b4f8a] hover:underline">
+                    <a href="{{ route('profile.edit') }}" class="pmb-link-blue inline-flex items-center gap-1 text-xs">
                         <span>&#9998;</span>
                         <span>Edit</span>
                     </a>
@@ -84,9 +317,7 @@
 
                 <div class="flex flex-col gap-4 sm:flex-row">
                     <div class="flex shrink-0 flex-col items-center">
-                        <div class="flex h-28 w-24 items-center justify-center rounded-xl border border-slate-200 bg-sky-50 text-2xl font-bold text-[#0b4f8a]">
-                            {{ $inisial }}
-                        </div>
+                        <div class="pmb-avatar-box">{{ $inisial }}</div>
                         <a href="{{ route('profile.edit') }}" class="mt-2 inline-flex items-center gap-1 rounded-md border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-medium text-slate-700 transition hover:bg-slate-50">
                             <span>&#128247;</span>
                             <span>Ganti Foto</span>
@@ -119,7 +350,7 @@
                             </div>
                             <div>
                                 <div class="text-[11px] text-slate-400">Nomor Registrasi</div>
-                                <div class="font-semibold text-[#0b4f8a]">Belum terbit</div>
+                                <div class="font-bold" style="color:#08467d;">Belum terbit</div>
                             </div>
                         </div>
 
@@ -128,28 +359,24 @@
                             <div class="font-medium text-slate-500">Belum dilengkapi</div>
                         </div>
 
-                        <!-- Data Keluarga -->
                         <div class="pt-1">
                             <div class="mb-1.5 flex items-center justify-between">
                                 <span class="text-xs font-bold text-slate-800">Data Keluarga</span>
-                                <a href="{{ route('keluarga.index') }}" class="text-[11px] font-semibold text-[#0b4f8a] hover:underline">Lihat Semua</a>
+                                <a href="{{ route('keluarga.index') }}" class="pmb-link-blue text-[11px]">Lihat Semua</a>
                             </div>
-                            <div class="space-y-1.5">
-                                <a href="{{ route('keluarga.index') }}" class="flex items-center justify-between rounded-lg border border-slate-200/80 bg-slate-50/70 px-3 py-2 text-xs text-slate-600 transition hover:border-sky-300 hover:bg-sky-50/50">
-                                    <span><strong class="text-slate-800">Orang Tua / Wali</strong> <span class="text-slate-400">(Belum ditambahkan)</span></span>
-                                    <span class="text-slate-400">&#128279;</span>
-                                </a>
-                            </div>
+                            <a href="{{ route('keluarga.index') }}" class="flex items-center justify-between rounded-lg border border-slate-200/80 bg-slate-50/70 px-3 py-2 text-xs text-slate-600 transition hover:bg-slate-100/70">
+                                <span><strong class="text-slate-800">Orang Tua / Wali</strong> <span class="text-slate-400">(Belum ditambahkan)</span></span>
+                                <span class="text-slate-400">&#128279;</span>
+                            </a>
                         </div>
 
-                        <!-- Pendidikan Terakhir -->
                         <div class="pt-1">
                             <div class="mb-1.5 flex items-center justify-between">
                                 <span class="text-xs font-bold text-slate-800">Pendidikan Terakhir</span>
-                                <a href="{{ route('profile.edit') }}" class="text-[11px] font-semibold text-[#0b4f8a] hover:underline">Lihat Semua</a>
+                                <a href="{{ route('profile.edit') }}" class="pmb-link-blue text-[11px]">Lihat Semua</a>
                             </div>
-                            <a href="{{ route('profile.edit') }}" class="flex items-center gap-2.5 rounded-lg border border-slate-200/80 bg-slate-50/70 px-3 py-2.5 text-xs transition hover:border-sky-300 hover:bg-sky-50/50">
-                                <span class="text-base text-[#0b4f8a]">&#127891;</span>
+                            <a href="{{ route('profile.edit') }}" class="flex items-center gap-2.5 rounded-lg border border-slate-200/80 bg-slate-50/70 px-3 py-2.5 text-xs transition hover:bg-slate-100/70">
+                                <span class="text-base" style="color:#08467d;">&#127891;</span>
                                 <div>
                                     <div class="font-bold text-slate-800">Belum dilengkapi</div>
                                     <div class="text-[11px] text-slate-400">SMA/SMK/MA atau Sederajat</div>
@@ -160,17 +387,14 @@
                 </div>
             </div>
 
-            <!-- Kelengkapan Profil -->
-            <div class="flex flex-col justify-between rounded-2xl border border-slate-200/90 bg-white p-5 shadow-2xs lg:col-span-6">
+            <div class="pmb-card flex flex-col justify-between lg:col-span-6">
                 <div>
                     <div class="mb-4 flex items-start justify-between gap-3">
                         <div>
                             <h2 class="text-base font-bold text-slate-900">Kelengkapan Profil</h2>
                             <p class="text-xs text-slate-500">Lengkapi profil Anda untuk melanjutkan proses pendaftaran</p>
                         </div>
-                        <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-[#0b4f8a] text-xs font-extrabold text-[#0b4f8a]">
-                            25%
-                        </div>
+                        <div class="pmb-progress-circle">25%</div>
                     </div>
 
                     <div class="space-y-2.5">
@@ -190,10 +414,10 @@
                             </div>
                         </a>
 
-                        <a href="{{ route('keluarga.index') }}" class="block rounded-xl border border-slate-200/80 bg-slate-50/40 p-3 transition hover:border-sky-300">
+                        <a href="{{ route('keluarga.index') }}" class="block rounded-xl border border-slate-200/80 bg-slate-50/40 p-3 transition hover:border-slate-300">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-2.5">
-                                    <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-100 text-sm text-[#0b4f8a]">&#128106;</span>
+                                    <span class="pmb-icon-blue">&#128106;</span>
                                     <div>
                                         <div class="text-xs font-bold text-slate-800">Data Keluarga</div>
                                         <div class="text-[10px] font-semibold uppercase tracking-wide text-slate-400">Belum ditambahkan</div>
@@ -206,10 +430,10 @@
                             </div>
                         </a>
 
-                        <a href="{{ route('profile.edit') }}" class="block rounded-xl border border-slate-200/80 bg-slate-50/40 p-3 transition hover:border-sky-300">
+                        <a href="{{ route('profile.edit') }}" class="block rounded-xl border border-slate-200/80 bg-slate-50/40 p-3 transition hover:border-slate-300">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-2.5">
-                                    <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-100 text-sm text-[#0b4f8a]">&#127891;</span>
+                                    <span class="pmb-icon-blue">&#127891;</span>
                                     <div>
                                         <div class="text-xs font-bold text-slate-800">Riwayat Pendidikan</div>
                                         <div class="text-[10px] font-semibold uppercase tracking-wide text-slate-400">Belum ditambahkan</div>
@@ -222,10 +446,10 @@
                             </div>
                         </a>
 
-                        <a href="{{ route('profile.edit') }}" class="block rounded-xl border border-slate-200/80 bg-slate-50/40 p-3 transition hover:border-sky-300">
+                        <a href="{{ route('profile.edit') }}" class="block rounded-xl border border-slate-200/80 bg-slate-50/40 p-3 transition hover:border-slate-300">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-2.5">
-                                    <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-100 text-sm text-[#0b4f8a]">&#128247;</span>
+                                    <span class="pmb-icon-blue">&#128247;</span>
                                     <div>
                                         <div class="text-xs font-bold text-slate-800">Foto Profil</div>
                                         <div class="text-[10px] font-semibold uppercase tracking-wide text-slate-400">Belum diupload</div>
@@ -250,18 +474,17 @@
             </div>
         </section>
 
-        <!-- Tab Jalur Pendaftaran -->
         <div>
-            <div class="inline-flex items-center gap-2 rounded-t-xl border border-b-0 border-slate-200 bg-white px-4 py-2.5 text-xs font-bold text-[#0b4f8a]">
+            <div class="pmb-tab-head">
                 <span>&#9200;</span>
                 <span>PMB IPWIJA 2026/2027</span>
             </div>
 
-            <div class="rounded-b-2xl rounded-tr-2xl border border-slate-200/90 bg-white p-5 shadow-2xs">
+            <div class="pmb-tab-body">
                 <div class="mb-4 flex items-center justify-between text-xs text-slate-500">
                     <div>Periode: <span class="font-semibold text-slate-700">2026/2027</span></div>
-                    <span class="inline-flex items-center gap-1.5 rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-[11px] font-semibold text-[#0b4f8a]">
-                        <span class="h-1.5 w-1.5 rounded-full bg-[#0b4f8a]"></span>
+                    <span class="pmb-pill-blue">
+                        <span style="width:6px;height:6px;border-radius:9999px;background-color:#08467d;"></span>
                         <span>PENGISIAN DATA</span>
                     </span>
                 </div>
@@ -287,7 +510,6 @@
                     </div>
                 </div>
 
-                <!-- Status Pembayaran -->
                 <div class="mt-3 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-slate-200/80 bg-slate-50/40 px-4 py-3 text-xs">
                     <div>
                         <div class="text-[10px] font-semibold text-slate-400">No. Tagihan</div>
@@ -301,16 +523,15 @@
                     </div>
                 </div>
 
-                <!-- Pilihan Program Studi -->
                 <div class="mt-6">
                     <div class="mb-3 flex items-center gap-2">
-                        <span class="text-sm text-[#0b4f8a]">&#127891;</span>
+                        <span class="text-sm" style="color:#08467d;">&#127891;</span>
                         <h3 class="text-sm font-bold text-slate-900">Pilihan Program Studi</h3>
                     </div>
 
                     <div class="overflow-x-auto rounded-lg border border-slate-200">
                         <table class="w-full text-left text-xs">
-                            <thead class="bg-[#0b4f8a] text-white">
+                            <thead class="pmb-table-head">
                                 <tr>
                                     <th class="px-3.5 py-2.5 font-semibold">Pilihan</th>
                                     <th class="px-3.5 py-2.5 font-semibold">Fakultas</th>
@@ -322,7 +543,7 @@
                             <tbody class="divide-y divide-slate-100 bg-white">
                                 <tr>
                                     <td class="px-3.5 py-3">
-                                        <span class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-sky-100 text-[11px] font-bold text-[#0b4f8a]">1</span>
+                                        <span class="inline-flex h-5 w-5 items-center justify-center rounded-full text-[11px] font-bold" style="background-color:#dbeafe;color:#08467d;">1</span>
                                     </td>
                                     <td class="px-3.5 py-3 text-slate-500">-</td>
                                     <td class="px-3.5 py-3 text-slate-500">-</td>
@@ -343,29 +564,28 @@
             </div>
         </div>
 
-        <!-- Progres Pendaftaran -->
-        <section class="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-2xs">
+        <section class="pmb-card">
             <div class="flex items-start justify-between gap-3">
                 <div>
                     <h2 class="text-base font-bold text-slate-900">Progres Pendaftaran</h2>
                     <p class="text-xs text-slate-500">Pelengkapan data &amp; tahapan pendaftaran</p>
                 </div>
                 <div class="text-right">
-                    <div class="text-xl font-extrabold text-[#0b4f8a]">20%</div>
+                    <div class="text-xl font-extrabold" style="color:#08467d;">20%</div>
                     <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Selesai</div>
                 </div>
             </div>
 
             <div class="mt-3 h-2 w-full overflow-hidden rounded-full bg-slate-100">
-                <div class="h-full w-1/5 rounded-full bg-[#0b4f8a]"></div>
+                <div class="h-full w-1/5 rounded-full" style="background-color:#08467d;"></div>
             </div>
 
             <div class="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-200/70 bg-slate-50/60 px-4 py-3">
                 <div class="flex items-center gap-2 text-xs font-semibold text-slate-700">
-                    <span class="h-2 w-2 rounded-full bg-[#0b4f8a]"></span>
+                    <span style="width:8px;height:8px;border-radius:9999px;background-color:#08467d;display:inline-block;"></span>
                     <span>Pemilihan Program Studi</span>
                 </div>
-                <a href="{{ route('profile.edit') }}" class="inline-flex items-center gap-1.5 rounded-lg bg-[#0b4f8a] px-4 py-2 text-xs font-semibold text-white transition hover:bg-[#083b69]">
+                <a href="{{ route('profile.edit') }}" class="pmb-btn-primary">
                     <span>Lengkapi Data</span>
                     <span>&rarr;</span>
                 </a>
@@ -389,15 +609,15 @@
                         <span class="rounded bg-emerald-100 px-2 py-0.5 text-[10px] font-bold uppercase text-emerald-700">Selesai</span>
                     </div>
 
-                    <div class="flex items-center justify-between rounded-xl border border-sky-200 bg-sky-50/40 px-4 py-3">
+                    <div class="pmb-step-active flex items-center justify-between rounded-xl px-4 py-3">
                         <div class="flex items-center gap-3">
-                            <span class="flex h-6 w-6 items-center justify-center rounded-full bg-[#0b4f8a] text-xs font-bold text-white">2</span>
+                            <span class="pmb-step-num-active">2</span>
                             <div>
                                 <div class="text-xs font-bold text-slate-800 sm:text-sm">Pemilihan Program Studi &amp; Data Tambahan</div>
                                 <div class="text-xs text-slate-500">Lengkapi biodata, keluarga, pendidikan, dan pilihan prodi</div>
                             </div>
                         </div>
-                        <span class="rounded bg-sky-100 px-2 py-0.5 text-[10px] font-bold uppercase text-[#0b4f8a]">Sedang Berlangsung</span>
+                        <span class="pmb-step-badge-active">Sedang Berlangsung</span>
                     </div>
 
                     <div class="flex items-center justify-between rounded-xl border border-slate-200/70 bg-white px-4 py-3">
@@ -406,28 +626,6 @@
                             <div>
                                 <div class="text-xs font-bold text-slate-700 sm:text-sm">Verifikasi Data</div>
                                 <div class="text-xs text-slate-400">Pemeriksaan keabsahan data dan berkas</div>
-                            </div>
-                        </div>
-                        <span class="rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase text-slate-500">Menunggu</span>
-                    </div>
-
-                    <div class="flex items-center justify-between rounded-xl border border-slate-200/70 bg-white px-4 py-3">
-                        <div class="flex items-center gap-3">
-                            <span class="flex h-6 w-6 items-center justify-center rounded-full bg-slate-100 text-xs font-semibold text-slate-500">4</span>
-                            <div>
-                                <div class="text-xs font-bold text-slate-700 sm:text-sm">Tagihan Pembayaran</div>
-                                <div class="text-xs text-slate-400">Cetak dan bayar biaya pendaftaran</div>
-                            </div>
-                        </div>
-                        <span class="rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase text-slate-500">Menunggu</span>
-                    </div>
-
-                    <div class="flex items-center justify-between rounded-xl border border-slate-200/70 bg-white px-4 py-3">
-                        <div class="flex items-center gap-3">
-                            <span class="flex h-6 w-6 items-center justify-center rounded-full bg-slate-100 text-xs font-semibold text-slate-500">5</span>
-                            <div>
-                                <div class="text-xs font-bold text-slate-700 sm:text-sm">Kartu Ujian &amp; Seleksi</div>
-                                <div class="text-xs text-slate-400">Cetak kartu peserta dan pantau hasil seleksi</div>
                             </div>
                         </div>
                         <span class="rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase text-slate-500">Menunggu</span>
