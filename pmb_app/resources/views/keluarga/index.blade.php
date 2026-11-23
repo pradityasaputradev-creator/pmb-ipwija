@@ -5,8 +5,343 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Keluarga - PMB Universitas IPWIJA</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #eef3f8;
+            color: #1e293b;
+        }
+        .pmb-header {
+            background-color: #08467d;
+            color: #ffffff;
+        }
+        .pmb-container {
+            max-width: 1020px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        .pmb-topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 15px 0 13px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+            flex-wrap: wrap;
+        }
+        .pmb-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .pmb-logo-img {
+            width: 42px;
+            height: 42px;
+            border-radius: 9999px;
+            object-fit: contain;
+            background-color: #ffffff;
+            padding: 2px;
+            flex-shrink: 0;
+        }
+        .pmb-logo-fallback {
+            width: 42px;
+            height: 42px;
+            border-radius: 9999px;
+            background-color: #ffffff;
+            color: #08467d;
+            font-size: 10px;
+            font-weight: 800;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .pmb-univ-title {
+            font-size: 17px;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+            color: #ffffff;
+            line-height: 1.2;
+        }
+        .pmb-univ-sub {
+            font-size: 11.5px;
+            color: #dbeafe;
+            margin-top: 2px;
+        }
+        .pmb-nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .pmb-btn-nav {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 13px;
+            border-radius: 6px;
+            background-color: #125894;
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .pmb-btn-nav:hover {
+            background-color: #1969ae;
+        }
+        .pmb-hero-sub {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 15px 0 20px;
+            flex-wrap: wrap;
+        }
+        .pmb-breadcrumb {
+            font-size: 11.5px;
+            color: #bfdbfe;
+        }
+        .pmb-breadcrumb strong {
+            color: #ffffff;
+            font-weight: 700;
+        }
+        .pmb-page-title {
+            margin: 5px 0 3px;
+            font-size: 26px;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.2;
+        }
+        .pmb-student-line {
+            margin: 0;
+            font-size: 12.5px;
+            color: #e0f2fe;
+        }
+        .pmb-student-line strong {
+            color: #ffffff;
+            font-weight: 700;
+        }
+        .pmb-status-pill {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 6px;
+            background-color: #125894;
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .pmb-status-pill.has-data {
+            background-color: rgba(16, 185, 129, 0.25);
+            border-color: rgba(110, 231, 183, 0.5);
+            color: #ecfdf5;
+        }
+        .pmb-main {
+            max-width: 1020px;
+            margin: 0 auto;
+            padding: 22px 24px 36px;
+        }
+        .pmb-alert-success {
+            background-color: #ecfdf5;
+            border: 1px solid #a7f3d0;
+            color: #065f46;
+            padding: 11px 15px;
+            border-radius: 8px;
+            font-size: 12.5px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        .pmb-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+            align-items: start;
+        }
+        @media (max-width: 860px) {
+            .pmb-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .pmb-card {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px 22px;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+        }
+        .pmb-card-title {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+        .pmb-card-desc {
+            margin: 4px 0 0;
+            font-size: 12.5px;
+            color: #64748b;
+            line-height: 1.45;
+        }
+        .pmb-form-stack {
+            margin-top: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 13px;
+        }
+        .pmb-label {
+            display: block;
+            font-size: 12.5px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 5px;
+        }
+        .pmb-input, .pmb-select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 13.5px;
+            color: #0f172a;
+            background-color: #ffffff;
+        }
+        .pmb-input:focus, .pmb-select:focus {
+            outline: none;
+            border-color: #08467d;
+            box-shadow: 0 0 0 3px rgba(8, 70, 125, 0.15);
+        }
+        .pmb-hint {
+            margin: 4px 0 0;
+            font-size: 11px;
+            color: #64748b;
+        }
+        .pmb-field-error {
+            margin: 4px 0 0;
+            font-size: 11.5px;
+            color: #dc2626;
+            font-weight: 600;
+        }
+        .pmb-form-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+            flex-wrap: wrap;
+        }
+        .pmb-btn-primary {
+            padding: 9px 16px;
+            border-radius: 6px;
+            background-color: #08467d;
+            border: 1px solid #08467d;
+            color: #ffffff;
+            font-size: 11.5px;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+        .pmb-btn-primary:hover {
+            background-color: #063560;
+        }
+        .pmb-btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 14px;
+            border-radius: 6px;
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            color: #334155;
+            font-size: 12.5px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .pmb-btn-secondary:hover {
+            background-color: #f8fafc;
+        }
+        .pmb-list-stack {
+            margin-top: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .pmb-item-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background-color: #f8fafc;
+            flex-wrap: wrap;
+        }
+        .pmb-item-rel {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 5px;
+            background-color: #dbeafe;
+            color: #08467d;
+            font-size: 11px;
+            font-weight: 800;
+        }
+        .pmb-item-name {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-left: 6px;
+        }
+        .pmb-item-hp {
+            margin: 4px 0 0;
+            font-size: 12px;
+            color: #475569;
+        }
+        .pmb-item-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .pmb-btn-edit {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 11px;
+            border-radius: 6px;
+            border: 1px solid #cbd5e1;
+            background-color: #ffffff;
+            color: #334155;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .pmb-btn-edit:hover {
+            background-color: #f1f5f9;
+        }
+        .pmb-btn-delete {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 11px;
+            border-radius: 6px;
+            border: 1px solid #fecaca;
+            background-color: #fef2f2;
+            color: #b91c1c;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .pmb-btn-delete:hover {
+            background-color: #fee2e2;
+        }
+        .pmb-empty-box {
+            margin-top: 16px;
+            border: 1px dashed #cbd5e1;
+            border-radius: 8px;
+            background-color: #f8fafc;
+            padding: 24px 16px;
+            text-align: center;
+        }
+    </style>
 </head>
-<body class="min-h-screen bg-[#f3f6fa] text-slate-800 antialiased">
+<body>
     @php
         $user = auth()->user();
         $namaUser = $user?->name ?? 'Calon Mahasiswa';
@@ -15,69 +350,75 @@
         $jumlahData = isset($daftarKeluarga) ? $daftarKeluarga->count() : 0;
     @endphp
 
-    <header class="bg-gradient-to-b from-[#0b4f8a] to-[#083b69] text-white shadow-sm">
-        <div class="mx-auto max-w-5xl px-4 py-4 sm:px-6">
-            <div class="flex items-center justify-between gap-3">
-                <div class="flex items-center gap-3">
-                    <img src="{{ asset('images/logo-ipwija-header.png') }}" alt="Logo IPWIJA" class="h-10 w-10 rounded-full bg-white p-1 object-contain">
+    <header class="pmb-header">
+        <div class="pmb-container">
+            <div class="pmb-topbar">
+                <div class="pmb-brand">
+                    <img
+                        src="{{ asset('images/logo-ipwija-header.png') }}"
+                        alt="Logo Universitas IPWIJA"
+                        class="pmb-logo-img"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                    >
+                    <div class="pmb-logo-fallback">IPWIJA</div>
                     <div>
-                        <div class="text-sm font-extrabold tracking-wide sm:text-lg">UNIVERSITAS IPWIJA</div>
-                        <div class="text-[11px] text-sky-100 sm:text-xs">Portal Calon Mahasiswa - Tahun Akademik 2026/2027</div>
+                        <div class="pmb-univ-title">UNIVERSITAS IPWIJA</div>
+                        <div class="pmb-univ-sub">Portal Calon Mahasiswa - Tahun Akademik 2026/2027</div>
                     </div>
                 </div>
 
-                <div class="flex items-center gap-2">
-                    <a href="{{ route('dashboard') }}" class="rounded-lg border border-white/25 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-white/20">
-                        &larr; Dashboard
+                <div class="pmb-nav-actions">
+                    <a href="{{ route('dashboard') }}" class="pmb-btn-nav">
+                        <span>&larr;</span>
+                        <span>Dashboard</span>
                     </a>
-                    <form method="POST" action="{{ route('logout') }}">
+                    <form method="POST" action="{{ route('logout') }}" style="margin:0;">
                         @csrf
-                        <button type="submit" class="rounded-lg border border-white/25 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-white/20">
-                            Keluar
-                        </button>
+                        <button type="submit" class="pmb-btn-nav">Keluar</button>
                     </form>
                 </div>
             </div>
 
-            <div class="mt-4 flex flex-wrap items-end justify-between gap-3">
+            <div class="pmb-hero-sub">
                 <div>
-                    <div class="text-[11px] font-medium text-sky-200">
-                        Alur PMB: Biodata &rarr; <span class="font-bold text-white">Data Keluarga</span> &rarr; Berkas &amp; Seleksi
+                    <div class="pmb-breadcrumb">
+                        Alur PMB: Biodata &rarr; <strong>Data Keluarga</strong> &rarr; Berkas &amp; Seleksi
                     </div>
-                    <h1 class="mt-0.5 text-xl font-bold tracking-tight sm:text-2xl">{{ __('Data Keluarga') }}</h1>
-                    <p class="mt-0.5 text-xs text-sky-100">Calon Mahasiswa: <span class="font-semibold text-white">{{ $namaUser }}</span></p>
+                    <h1 class="pmb-page-title">Data Keluarga</h1>
+                    <p class="pmb-student-line">
+                        Calon Mahasiswa: <strong>{{ $namaUser }}</strong>
+                    </p>
                 </div>
 
-                <span class="inline-flex shrink-0 self-start sm:self-center items-center rounded-lg border border-white/20 bg-white/10 px-2.5 py-1 text-[11px] font-semibold text-sky-100">
-                    {{ $jumlahData > 0 ? $jumlahData . ' Data Tersimpan' : 'Belum Ada Data' }}
-                </span>
+                <div>
+                    <span class="pmb-status-pill {{ $jumlahData > 0 ? 'has-data' : '' }}">
+                        {{ $jumlahData > 0 ? $jumlahData . ' Data Tersimpan' : 'Belum Ada Data' }}
+                    </span>
+                </div>
             </div>
         </div>
     </header>
 
-    <main class="mx-auto max-w-5xl px-4 py-6 sm:px-6 space-y-6">
+    <main class="pmb-main">
         @if (session('keluarga_status'))
-            <div class="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-xs font-semibold text-emerald-700">
+            <div class="pmb-alert-success">
                 {{ session('keluarga_status') }}
             </div>
         @endif
 
-        <div class="grid grid-cols-1 gap-6 lg:grid-cols-12">
-            {{-- Form Tambah / Edit Data Keluarga --}}
-            <section class="lg:col-span-6 rounded-2xl border border-slate-200/90 bg-white p-5 shadow-2xs sm:p-6">
-                <header class="border-b border-slate-100 pb-4">
-                    <h2 class="text-base font-bold text-slate-900">
-                        {{ $isEditing ? 'Edit Data Keluarga' : 'Tambah Data Keluarga' }}
-                    </h2>
-                    <p class="mt-1 text-xs text-slate-500">
-                        Sebaiknya lengkapi data Ayah dan Ibu jika tersedia. Jika hanya ada salah satu atau wali, cukup isi yang ada.
-                    </p>
-                </header>
+        <div class="pmb-grid">
+            <section class="pmb-card">
+                <h2 class="pmb-card-title">
+                    {{ $isEditing ? 'Edit Data Keluarga' : 'Tambah Data Keluarga' }}
+                </h2>
+                <p class="pmb-card-desc">
+                    Sebaiknya lengkapi data Ayah dan Ibu jika tersedia. Jika hanya ada salah satu atau wali, cukup isi yang ada.
+                </p>
 
                 <form
                     method="POST"
                     action="{{ $isEditing ? route('keluarga.update', $keluargaEdit->id) : route('keluarga.store') }}"
-                    class="mt-5 space-y-4"
+                    class="pmb-form-stack"
                 >
                     @csrf
                     @if ($isEditing)
@@ -85,96 +426,97 @@
                     @endif
 
                     <div>
-                        <x-input-label for="nama_keluarga" :value="__('Nama Lengkap')" class="text-xs font-bold text-slate-700" />
-                        <x-text-input
+                        <label for="nama_keluarga" class="pmb-label">Nama Lengkap</label>
+                        <input
                             id="nama_keluarga"
                             name="nama_keluarga"
                             type="text"
-                            class="mt-1.5 block w-full rounded-xl border-slate-300 text-sm shadow-2xs focus:border-[#0b4f8a] focus:ring-[#0b4f8a]"
-                            :value="old('nama_keluarga', $keluargaEdit->nama ?? '')"
+                            value="{{ old('nama_keluarga', $keluargaEdit->nama ?? '') }}"
                             placeholder="Masukkan nama lengkap orang tua atau wali"
                             required
                             autofocus
-                        />
-                        <x-input-error class="mt-1.5" :messages="$errors->get('nama_keluarga')" />
+                            class="pmb-input"
+                        >
+                        @foreach ($errors->get('nama_keluarga') as $err)
+                            <p class="pmb-field-error">{{ $err }}</p>
+                        @endforeach
                     </div>
 
                     <div>
-                        <x-input-label for="hubungan_keluarga" :value="__('Hubungan')" class="text-xs font-bold text-slate-700" />
+                        <label for="hubungan_keluarga" class="pmb-label">Hubungan</label>
                         <select
                             id="hubungan_keluarga"
                             name="hubungan_keluarga"
-                            class="mt-1.5 block w-full rounded-xl border-slate-300 text-sm shadow-2xs focus:border-[#0b4f8a] focus:ring-[#0b4f8a]"
                             required
+                            class="pmb-select"
                         >
                             <option value="Ayah" {{ $hubunganTerpilih === 'Ayah' ? 'selected' : '' }}>Ayah</option>
                             <option value="Ibu" {{ $hubunganTerpilih === 'Ibu' ? 'selected' : '' }}>Ibu</option>
                             <option value="Wali" {{ $hubunganTerpilih === 'Wali' ? 'selected' : '' }}>Wali</option>
                         </select>
-                        <x-input-error class="mt-1.5" :messages="$errors->get('hubungan_keluarga')" />
+                        @foreach ($errors->get('hubungan_keluarga') as $err)
+                            <p class="pmb-field-error">{{ $err }}</p>
+                        @endforeach
                     </div>
 
                     <div>
-                        <x-input-label for="hp_keluarga" :value="__('No. HP / Telepon')" class="text-xs font-bold text-slate-700" />
-                        <x-text-input
+                        <label for="hp_keluarga" class="pmb-label">No. HP / Telepon</label>
+                        <input
                             id="hp_keluarga"
                             name="hp_keluarga"
                             type="text"
-                            class="mt-1.5 block w-full rounded-xl border-slate-300 text-sm shadow-2xs focus:border-[#0b4f8a] focus:ring-[#0b4f8a]"
-                            :value="old('hp_keluarga', $keluargaEdit->hp ?? '')"
+                            value="{{ old('hp_keluarga', $keluargaEdit->hp ?? '') }}"
                             placeholder="Contoh: 081234567890"
-                        />
-                        <p class="mt-1 text-[11px] text-slate-400">Nomor kontak aktif untuk keperluan konfirmasi administrasi PMB.</p>
-                        <x-input-error class="mt-1.5" :messages="$errors->get('hp_keluarga')" />
+                            class="pmb-input"
+                        >
+                        <p class="pmb-hint">Nomor kontak aktif untuk keperluan konfirmasi administrasi PMB.</p>
+                        @foreach ($errors->get('hp_keluarga') as $err)
+                            <p class="pmb-field-error">{{ $err }}</p>
+                        @endforeach
                     </div>
 
-                    <div class="flex flex-wrap items-center gap-2.5 pt-2">
-                        <button type="submit" class="inline-flex items-center justify-center rounded-xl bg-[#0b4f8a] px-5 py-2.5 text-xs font-bold uppercase tracking-wide text-white shadow-2xs transition hover:bg-[#083b69]">
+                    <div class="pmb-form-actions">
+                        <button type="submit" class="pmb-btn-primary">
                             {{ $isEditing ? 'PERBARUI DATA' : 'SIMPAN DATA KELUARGA' }}
                         </button>
 
                         @if ($isEditing)
-                            <a href="{{ route('keluarga.index') }}" class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-xs font-semibold text-slate-700 transition hover:bg-slate-50">
+                            <a href="{{ route('keluarga.index') }}" class="pmb-btn-secondary">
                                 Batal Edit
                             </a>
                         @endif
 
-                        <a href="{{ route('dashboard') }}" class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-xs font-semibold text-slate-700 transition hover:bg-slate-50">
+                        <a href="{{ route('dashboard') }}" class="pmb-btn-secondary">
                             Kembali ke Dashboard
                         </a>
                     </div>
                 </form>
             </section>
 
-            {{-- Daftar Data Keluarga Tersimpan --}}
-            <section class="lg:col-span-6 rounded-2xl border border-slate-200/90 bg-white p-5 shadow-2xs sm:p-6">
-                <header class="border-b border-slate-100 pb-4">
-                    <h2 class="text-base font-bold text-slate-900">Data Keluarga Tersimpan</h2>
-                    <p class="mt-1 text-xs text-slate-500">
-                        Perubahan pada tombol Edit atau Hapus akan langsung memperbarui data di database.
-                    </p>
-                </header>
+            <section class="pmb-card">
+                <h2 class="pmb-card-title">Data Keluarga Tersimpan</h2>
+                <p class="pmb-card-desc">
+                    Perubahan pada tombol Edit atau Hapus akan langsung memperbarui data di database.
+                </p>
 
                 @if ($jumlahData > 0)
-                    <div class="mt-4 space-y-3">
+                    <div class="pmb-list-stack">
                         @foreach ($daftarKeluarga as $item)
-                            <div class="flex flex-col justify-between gap-3 rounded-xl border border-slate-200/80 bg-slate-50/60 p-4 sm:flex-row sm:items-center">
+                            <div class="pmb-item-card">
                                 <div>
-                                    <div class="flex items-center gap-2">
-                                        <span class="inline-flex items-center rounded-md bg-sky-100 px-2 py-0.5 text-[11px] font-bold text-[#0b4f8a]">
-                                            {{ $item->hubungan }}
-                                        </span>
-                                        <span class="text-sm font-bold text-slate-900">{{ $item->nama }}</span>
+                                    <div>
+                                        <span class="pmb-item-rel">{{ $item->hubungan }}</span>
+                                        <span class="pmb-item-name">{{ $item->nama }}</span>
                                     </div>
-                                    <p class="mt-1 text-xs text-slate-600">
-                                        No. HP / Telepon: <span class="font-medium text-slate-800">{{ $item->hp ?: 'Belum diisi' }}</span>
+                                    <p class="pmb-item-hp">
+                                        No. HP / Telepon: <strong>{{ $item->hp ?: 'Belum diisi' }}</strong>
                                     </p>
                                 </div>
 
-                                <div class="flex items-center gap-2 shrink-0">
+                                <div class="pmb-item-actions">
                                     <a
                                         href="{{ route('keluarga.index', ['edit' => $item->id]) }}"
-                                        class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:bg-slate-100"
+                                        class="pmb-btn-edit"
                                     >
                                         Edit
                                     </a>
@@ -182,14 +524,12 @@
                                     <form
                                         method="POST"
                                         action="{{ route('keluarga.destroy', $item->id) }}"
+                                        style="margin:0;"
                                         onsubmit="return confirm('Hapus data {{ addslashes($item->nama) }} ({{ addslashes($item->hubungan) }}) dari database?');"
                                     >
                                         @csrf
                                         @method('DELETE')
-                                        <button
-                                            type="submit"
-                                            class="inline-flex items-center rounded-lg border border-rose-200 bg-rose-50 px-3 py-1.5 text-xs font-semibold text-rose-700 transition hover:bg-rose-100"
-                                        >
+                                        <button type="submit" class="pmb-btn-delete">
                                             Hapus
                                         </button>
                                     </form>
@@ -198,9 +538,9 @@
                         @endforeach
                     </div>
                 @else
-                    <div class="mt-5 rounded-xl border border-dashed border-slate-200 bg-slate-50/50 px-4 py-8 text-center">
-                        <p class="text-xs font-semibold text-slate-600">Belum ada data keluarga yang tersimpan.</p>
-                        <p class="mt-1 text-xs text-slate-400">Gunakan formulir di samping untuk menambahkan data Ayah, Ibu, atau Wali.</p>
+                    <div class="pmb-empty-box">
+                        <div style="font-size:12.5px;font-weight:700;color:#475569;">Belum ada data keluarga yang tersimpan.</div>
+                        <div style="font-size:12px;color:#94a3b8;margin-top:4px;">Gunakan formulir di samping untuk menambahkan data Ayah, Ibu, atau Wali.</div>
                     </div>
                 @endif
             </section>
