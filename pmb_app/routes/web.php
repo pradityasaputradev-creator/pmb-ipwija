@@ -31,7 +31,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/keluarga', [KeluargaController::class, 'keluarga'])->name('keluarga.index');
-    Route::post('/profile/keluarga', [KeluargaController::class, 'updateKeluarga'])->name('profile.keluarga.store');
+    Route::post('/keluarga', [KeluargaController::class, 'store'])->name('keluarga.store');
+    Route::put('/keluarga/{keluarga}', [KeluargaController::class, 'update'])->name('keluarga.update');
+    Route::delete('/keluarga/{keluarga}', [KeluargaController::class, 'destroy'])->name('keluarga.destroy');
 });
 
 require __DIR__.'/auth.php';
