@@ -30,43 +30,43 @@
                     >
                 </div>
                 <div>
-                    <p class="text-xs uppercase tracking-widest text-amber-300 font-semibold">Portal Penerimaan Mahasiswa Baru</p>
+                    <p class="text-xs uppercase tracking-widest text-white font-semibold">Portal Penerimaan Mahasiswa Baru</p>
                     <h1 class="text-lg font-bold tracking-tight text-white">Universitas IPWIJA</h1>
                 </div>
             </div>
 
             <div class="relative z-10 my-12 max-w-xl">
-                <span class="inline-block rounded-full bg-amber-500/20 border border-amber-400/40 px-3.5 py-1 text-xs font-medium text-amber-200 mb-4">
+                <span class="inline-block rounded-full bg-white/15 border border-white/30 px-3.5 py-1 text-xs font-medium text-white mb-4">
                     Registrasi Calon Mahasiswa Baru
                 </span>
                 <h2 class="text-3xl sm:text-4xl font-bold leading-tight text-white">
                     Buat akun pendaftar terlebih dahulu sebelum memilih jalur & melengkapi data.
                 </h2>
-                <p class="mt-4 text-sm sm:text-base text-slate-200/90 leading-relaxed">
+                <p class="mt-4 text-sm sm:text-base text-white/95 leading-relaxed">
                     Proses dibuat bertahap agar pengisian lebih ringan: mulai dari pembuatan akun, pemilihan jalur/program studi, hingga kelengkapan berkas di dalam portal.
                 </p>
 
                 <!-- Ringkasan 3 Langkah -->
                 <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-3 text-left">
                     <div class="rounded-xl bg-white/10 backdrop-blur-sm border border-white/15 p-3.5">
-                        <div class="text-xs font-bold text-amber-300">LANGKAH 01</div>
+                        <div class="text-xs font-bold text-white">LANGKAH 01</div>
                         <div class="mt-1 text-sm font-semibold text-white">BUAT AKUN</div>
-                        <p class="mt-1 text-xs text-slate-200/80">Daftar dengan nama, email aktif, dan kata sandi.</p>
+                        <p class="mt-1 text-xs text-white/90">Daftar dengan nama, email aktif, dan kata sandi.</p>
                     </div>
                     <div class="rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 p-3.5">
                         <div class="text-xs font-bold text-slate-300">LANGKAH 02</div>
                         <div class="mt-1 text-sm font-semibold text-white">JALUR & PRODI</div>
-                        <p class="mt-1 text-xs text-slate-300/80">Pilih jenjang, program studi, dan jalur masuk.</p>
+                        <p class="mt-1 text-xs text-white/90">Pilih jenjang, program studi, dan jalur masuk.</p>
                     </div>
                     <div class="rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 p-3.5">
                         <div class="text-xs font-bold text-slate-300">LANGKAH 03</div>
                         <div class="mt-1 text-sm font-semibold text-white">BERKAS & SELEKSI</div>
-                        <p class="mt-1 text-xs text-slate-300/80">Lengkapi profil, dokumen, dan pantau status.</p>
+                        <p class="mt-1 text-xs text-white/90">Lengkapi profil, dokumen, dan pantau status.</p>
                     </div>
                 </div>
             </div>
 
-            <div class="relative z-10 text-xs text-slate-300/80">
+            <div class="relative z-10 text-xs text-white/90">
                 &copy; {{ date('Y') }} PMB Universitas IPWIJA. Seluruh hak cipta dilindungi.
             </div>
         </div>
@@ -175,7 +175,7 @@
 
                     <div class="pt-3 text-center text-sm text-slate-600">
                         {{ __('Sudah punya akun?') }}
-                        <a href="{{ route('login') }}" class="font-semibold text-amber-600 hover:text-amber-700 underline underline-offset-2">
+                        <a href="{{ route('login') }}" class="font-semibold text-[#0077b6] hover:text-[#005f92] underline underline-offset-2">
                             {{ __('Masuk di sini') }}
                         </a>
                     </div>
