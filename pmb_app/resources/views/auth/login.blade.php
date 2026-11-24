@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="utf-8">
@@ -25,11 +25,16 @@
                 <!-- Logo Lepas Tanpa Kotak Putih ala SIMASTER UGM -->
                 <div class="space-y-4">
                     <div class="flex items-center">
-                        <img
-                            src="{{ asset('images/logo-ipwija-header.png') }}"
-                            alt="Logo Universitas IPWIJA"
-                            class="h-14 sm:h-16 w-auto object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.65)]"
+                        <div
+                            style="width: 50px; height: 50px; padding: 4px; border-radius: 9999px; background: rgba(255, 255, 255, 0.95); display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden;"
                         >
+                            <img
+                                src="{{ asset('images/logo-ipwija-header.png') }}"
+                                alt="Logo Universitas IPWIJA"
+                                class="h-full w-full object-contain rounded-full"
+                                style="width: 100%; height: 100%; object-fit: contain; border-radius: 9999px; display: block;"
+                            >
+                        </div>
                     </div>
 
                     <div>
@@ -84,7 +89,7 @@
 
                 <!-- Kredit Kecil -->
                 <div class="pt-1 text-xs text-slate-300/90">
-                    Dibuat dengan <span class="text-rose-400">♥</span> untuk <span class="text-white font-medium">Universitas IPWIJA</span>
+                    Dibuat dengan <span class="text-rose-400">?</span> untuk <span class="text-white font-medium">Universitas IPWIJA</span>
                 </div>
             </div>
 
@@ -270,7 +275,7 @@
                     class="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition cursor-pointer"
                     aria-label="Tutup panduan"
                 >
-                    ✕
+                    ?
                 </button>
             </div>
 
@@ -388,7 +393,7 @@
                     class="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition cursor-pointer"
                     aria-label="Tutup modal"
                 >
-                    ✕
+                    ?
                 </button>
             </div>
 
@@ -428,7 +433,7 @@
                 nomor: '1',
                 badgeClass: 'bg-rose-100 text-rose-600',
                 bulletClass: 'marker:text-rose-500',
-                judul: 'Tahap 1 · DAFTAR',
+                judul: 'Tahap 1 � DAFTAR',
                 subjudul: 'Buat akun & pilih jalur seleksi',
                 deskripsi: 'Langkah awal calon mahasiswa baru adalah membuat akun pendaftaran PMB Universitas IPWIJA, meninjau pilihan program studi, lalu menentukan jalur seleksi/gelombang yang sesuai.',
                 poin: [
@@ -444,7 +449,7 @@
                 nomor: '2',
                 badgeClass: 'bg-amber-100 text-amber-600',
                 bulletClass: 'marker:text-amber-500',
-                judul: 'Tahap 2 · BERKAS',
+                judul: 'Tahap 2 � BERKAS',
                 subjudul: 'Lengkapi data & unggah dokumen',
                 deskripsi: 'Setelah akun aktif, lengkapi formulir biodata calon mahasiswa serta unggah dokumen persyaratan sesuai ketentuan jalur pendaftaran.',
                 poin: [
@@ -460,7 +465,7 @@
                 nomor: '3',
                 badgeClass: 'bg-emerald-100 text-emerald-600',
                 bulletClass: 'marker:text-emerald-500',
-                judul: 'Tahap 3 · SELEKSI',
+                judul: 'Tahap 3 � SELEKSI',
                 subjudul: 'Pantau status & hasil kelulusan',
                 deskripsi: 'Berkas dan pendaftaran yang masuk akan melalui proses verifikasi serta seleksi. Kamu bisa memantau perkembangan status pendaftaran secara berkala.',
                 poin: [
