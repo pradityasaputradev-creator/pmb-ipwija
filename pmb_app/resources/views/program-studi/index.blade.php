@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="utf-8">
@@ -35,7 +35,7 @@
 
             <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-slate-600">
                 <a href="{{ route('login') }}" class="hover:text-[#0b4f8a] transition">Beranda</a>
-                <a href="#cari-jalur" class="hover:text-[#0b4f8a] transition">Jalur Pendaftaran</a>
+                <a href="{{ route('jalur-pendaftaran.index') }}" class="hover:text-[#0b4f8a] transition">Jalur Pendaftaran</a>
                 <a href="{{ route('program-studi.index') }}" class="text-[#0b4f8a] font-bold border-b-2 border-[#0b4f8a] py-5">Program Studi</a>
                 <a href="#tata-cara" class="hover:text-[#0b4f8a] transition">Informasi</a>
             </nav>
@@ -393,3 +393,5 @@
     </script>
 </body>
 </html>
+
+

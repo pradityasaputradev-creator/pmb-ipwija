@@ -13,6 +13,10 @@ Route::get('/program-studi', function () {
     return view('program-studi.index');
 })->name('program-studi.index');
 
+Route::get('/jalur-pendaftaran', function () {
+    return view('jalur-pendaftaran.index');
+})->name('jalur-pendaftaran.index');
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
