@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -382,7 +382,7 @@
     <main class="pmb-main">
         @if (session('status') === 'profile-updated')
             <div class="pmb-alert-success">
-                <span>Data pribadi berhasil disimpan ke database.</span>
+                <span>Data pribadi berhasil disimpan</span>
                 <a href="{{ route('dashboard') }}" style="color:#065f46;font-weight:700;text-decoration:underline;">Kembali ke Dashboard</a>
             </div>
         @endif

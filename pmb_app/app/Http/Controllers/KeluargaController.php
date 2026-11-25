@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace App\Http\Controllers;
 
@@ -47,7 +47,7 @@ class KeluargaController extends Controller
             'hp' => $data['hp_keluarga'] ?? null,
         ]);
 
-        $request->session()->flash('keluarga_status', 'Data keluarga berhasil ditambahkan.');
+        $request->session()->flash('keluarga_status', 'Data keluarga berhasil disimpan');
 
         return Redirect::route('keluarga.index');
     }
