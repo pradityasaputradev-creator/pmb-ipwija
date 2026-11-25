@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -338,15 +338,15 @@
                         <div class="grid grid-cols-2 gap-2.5">
                             <div>
                                 <div class="text-[11px] text-slate-400">No. Identitas</div>
-                                <div class="font-semibold text-slate-500">Belum dilengkapi</div>
+                                <div class="font-semibold text-slate-700">{{ filled($user->nik) ? $user->nik : '' }}</div>
                             </div>
                             <div>
                                 <div class="text-[11px] text-slate-400">Tanggal Lahir</div>
-                                <div class="font-semibold text-slate-500">Belum dilengkapi</div>
+                                <div class="font-semibold text-slate-700">{{ filled($user->tanggal_lahir) ? (\Illuminate\Support\Carbon::parse($user->tanggal_lahir)->format('d-m-Y')) : '' }}</div>
                             </div>
                             <div>
                                 <div class="text-[11px] text-slate-400">Nomor Telepon</div>
-                                <div class="font-semibold text-slate-500">Belum dilengkapi</div>
+                                <div class="font-semibold text-slate-700">{{ filled($user->no_hp) ? $user->no_hp : '' }}</div>
                             </div>
                             <div>
                                 <div class="text-[11px] text-slate-400">Nomor Registrasi</div>
@@ -356,7 +356,7 @@
 
                         <div>
                             <div class="text-[11px] text-slate-400">Alamat</div>
-                            <div class="font-medium text-slate-500">Belum dilengkapi</div>
+                            <div class="font-medium text-slate-700">{{ filled($user->alamat) ? $user->alamat : '' }}</div>
                         </div>
 
                         <div class="pt-1">
@@ -364,10 +364,22 @@
                                 <span class="text-xs font-bold text-slate-800">Data Keluarga</span>
                                 <a href="{{ route('keluarga.index') }}" class="pmb-link-blue text-[11px]">Lihat Semua</a>
                             </div>
-                            <a href="{{ route('keluarga.index') }}" class="flex items-center justify-between rounded-lg border border-slate-200/80 bg-slate-50/70 px-3 py-2 text-xs text-slate-600 transition hover:bg-slate-100/70">
-                                <span><strong class="text-slate-800">Orang Tua / Wali</strong> <span class="text-slate-400">(Belum ditambahkan)</span></span>
-                                <span class="text-slate-400">&#128279;</span>
-                            </a>
+                            <div class="space-y-1.5">
+                                @foreach ($daftarKeluarga as $kel)
+                                    <a href="{{ route('keluarga.index') }}" class="flex items-center justify-between rounded-lg border border-slate-200/80 bg-slate-50/70 px-3 py-2 text-xs text-slate-600 transition hover:bg-slate-100/70">
+                                        <span>
+                                            <strong class="text-slate-800">{{ $kel->hubungan }}</strong>
+                                            @if (filled($kel->nama))
+                                                <span class="text-slate-700">- {{ $kel->nama }}</span>
+                                            @endif
+                                            @if (filled($kel->hp))
+                                                <span class="text-slate-400">({{ $kel->hp }})</span>
+                                            @endif
+                                        </span>
+                                        <span class="text-slate-400">&#128279;</span>
+                                    </a>
+                                @endforeach
+                            </div>
                         </div>
 
                         <div class="pt-1">

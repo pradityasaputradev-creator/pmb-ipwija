@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\KeluargaController;
+use App\Models\Keluarga;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -17,8 +18,16 @@ Route::get('/jalur-pendaftaran', function () {
     return view('jalur-pendaftaran.index');
 })->name('jalur-pendaftaran.index');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
+Route::get('/dashboard', function (Request $request) {
+    $user = $request->user();
+    $daftarKeluarga = Keluarga::where('user_id', $user->id)
+        ->orderBy('id')
+        ->get();
+
+    return view('dashboard', [
+        'user' => $user,
+        'daftarKeluarga' => $daftarKeluarga,
+    ]);
 })->middleware(['auth'])->name('dashboard');
 
 Route::get('/admin/dashboard', function (Request $request) {
@@ -41,3 +50,4 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
