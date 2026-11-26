@@ -5,6 +5,7 @@ use App\Http\Controllers\PendidikanController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Keluarga;
 use App\Models\Pendidikan;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -42,7 +43,57 @@ Route::get('/admin/dashboard', function (Request $request) {
         abort(403, 'Akses khusus Admin PMB.');
     }
 
-    return view('admin.dashboard');
+    $tab = $request->query('tab', 'ringkasan');
+    $search = trim((string) $request->query('q', ''));
+    $statusFilter = $request->query('status', '');
+    $detailId = $request->query('detail');
+
+    $query = User::where('role', 'user')
+        ->withCount(['keluargas', 'pendidikans'])
+        ->latest();
+
+    if ($search !== '') {
+        $query->where(function ($q) use ($search) {
+            $q->where('name', 'like', "%{$search}%")
+              ->orWhere('email', 'like', "%{$search}%")
+              ->orWhere('nik', 'like', "%{$search}%");
+        });
+    }
+
+    if ($statusFilter === 'lengkap') {
+        $query->whereNotNull('nik')
+              ->whereNotNull('no_hp')
+              ->whereNotNull('alamat')
+              ->has('keluargas')
+              ->has('pendidikans');
+    } elseif ($statusFilter === 'belum_lengkap') {
+        $query->where(function ($q) {
+            $q->whereNull('nik')
+              ->orWhereNull('no_hp')
+              ->orWhereNull('alamat')
+              ->orDoesntHave('keluargas')
+              ->orDoesntHave('pendidikans');
+        });
+    }
+
+    $pendaftar = $query->get();
+
+    $pendaftarDetail = null;
+    if ($detailId) {
+        $pendaftarDetail = User::where('role', 'user')
+            ->with(['keluargas', 'pendidikans'])
+            ->find($detailId);
+    }
+
+    return view('admin.dashboard', [
+        'tab' => $tab,
+        'search' => $search,
+        'statusFilter' => $statusFilter,
+        'pendaftar' => $pendaftar,
+        'pendaftarDetail' => $pendaftarDetail,
+        'totalAkun' => User::count(),
+        'totalCalonMahasiswa' => User::where('role', 'user')->count(),
+    ]);
 })->middleware(['auth'])->name('admin.dashboard');
 
 Route::middleware('auth')->group(function () {

@@ -7,7 +7,8 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use IlluminateDatabaseEloquentRelationsHasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -35,5 +36,14 @@ class User extends Authenticatable
     public function keluarga(): HasOne
     {
         return $this->hasOne(Keluarga::class);
+    }
+    public function keluargas(): HasMany
+    {
+        return $this->hasMany(Keluarga::class);
+    }
+
+    public function pendidikans(): HasMany
+    {
+        return $this->hasMany(Pendidikan::class);
     }
 }
