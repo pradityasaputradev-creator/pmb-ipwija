@@ -1,0 +1,27 @@
+﻿<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('pendidikans', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->string('jenjang', 40);
+            $table->string('nama_sekolah', 150);
+            $table->string('jurusan', 120)->nullable();
+            $table->unsignedSmallInteger('tahun_lulus');
+            $table->string('no_ijazah', 80)->nullable();
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('pendidikans');
+    }
+};

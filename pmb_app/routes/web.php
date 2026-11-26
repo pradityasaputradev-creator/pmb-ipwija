@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\KeluargaController;
-use App\Models\Keluarga;
+use App\Http\Controllers\PendidikanController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Keluarga;
+use App\Models\Pendidikan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,10 +25,15 @@ Route::get('/dashboard', function (Request $request) {
     $daftarKeluarga = Keluarga::where('user_id', $user->id)
         ->orderBy('id')
         ->get();
+    $daftarPendidikan = Pendidikan::where('user_id', $user->id)
+        ->orderByDesc('tahun_lulus')
+        ->orderByDesc('id')
+        ->get();
 
     return view('dashboard', [
         'user' => $user,
         'daftarKeluarga' => $daftarKeluarga,
+        'daftarPendidikan' => $daftarPendidikan,
     ]);
 })->middleware(['auth'])->name('dashboard');
 
@@ -47,7 +54,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/keluarga', [KeluargaController::class, 'store'])->name('keluarga.store');
     Route::put('/keluarga/{keluarga}', [KeluargaController::class, 'update'])->name('keluarga.update');
     Route::delete('/keluarga/{keluarga}', [KeluargaController::class, 'destroy'])->name('keluarga.destroy');
+
+    Route::get('/pendidikan', [PendidikanController::class, 'index'])->name('pendidikan.index');
+    Route::post('/pendidikan', [PendidikanController::class, 'store'])->name('pendidikan.store');
+    Route::put('/pendidikan/{pendidikan}', [PendidikanController::class, 'update'])->name('pendidikan.update');
+    Route::delete('/pendidikan/{pendidikan}', [PendidikanController::class, 'destroy'])->name('pendidikan.destroy');
 });
 
 require __DIR__.'/auth.php';
-

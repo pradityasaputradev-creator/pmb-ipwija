@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -385,7 +385,7 @@
                         <div class="pt-1">
                             <div class="mb-1.5 flex items-center justify-between">
                                 <span class="text-xs font-bold text-slate-800">Pendidikan Terakhir</span>
-                                <a href="{{ route('profile.edit') }}" class="pmb-link-blue text-[11px]">Lihat Semua</a>
+                                <a href="{{ route('pendidikan.index') }}" class="pmb-link-blue text-[11px]">Lihat Semua</a>
                             </div>
                             <a href="{{ route('profile.edit') }}" class="flex items-center gap-2.5 rounded-lg border border-slate-200/80 bg-slate-50/70 px-3 py-2.5 text-xs transition hover:bg-slate-100/70">
                                 <span class="text-base" style="color:#08467d;">&#127891;</span>
@@ -399,6 +399,30 @@
                 </div>
             </div>
 
+            @php
+                $pribadiFields = [
+                    filled($user->nik),
+                    filled($user->tanggal_lahir),
+                    filled($user->no_hp),
+                    filled($user->alamat),
+                ];
+                $pribadiTerisi = count(array_filter($pribadiFields));
+                $pribadiPct = (int) round(($pribadiTerisi / count($pribadiFields)) * 100);
+                $pribadiSelesai = $pribadiTerisi === count($pribadiFields);
+
+                $keluargaCount = isset($daftarKeluarga) ? $daftarKeluarga->count() : 0;
+                $keluargaSelesai = $keluargaCount > 0;
+                $keluargaPct = $keluargaSelesai ? 100 : 0;
+
+                $pendidikanCount = isset($daftarPendidikan) ? $daftarPendidikan->count() : 0;
+                $pendidikanSelesai = $pendidikanCount > 0;
+                $pendidikanPct = $pendidikanSelesai ? 100 : 0;
+
+                $totalKelengkapanPct = (int) round(($pribadiPct + $keluargaPct + $pendidikanPct) / 3);
+                $semuaLengkap = $pribadiSelesai && $keluargaSelesai;
+            @endphp
+
+
             <div class="pmb-card flex flex-col justify-between lg:col-span-6">
                 <div>
                     <div class="mb-4 flex items-start justify-between gap-3">
@@ -406,55 +430,61 @@
                             <h2 class="text-base font-bold text-slate-900">Kelengkapan Profil</h2>
                             <p class="text-xs text-slate-500">Lengkapi profil Anda untuk melanjutkan proses pendaftaran</p>
                         </div>
-                        <div class="pmb-progress-circle">25%</div>
+                        <div class="pmb-progress-circle">{{ $totalKelengkapanPct }}%</div>
                     </div>
 
                     <div class="space-y-2.5">
-                        <a href="{{ route('profile.edit') }}" class="block rounded-xl border border-slate-200/80 bg-slate-50/40 p-3 transition hover:border-emerald-300">
+                        <a href="{{ route('profile.edit') }}" class="block rounded-xl border {{ $pribadiSelesai ? 'border-emerald-200/90 hover:border-emerald-300' : 'border-slate-200/80 hover:border-slate-300' }} bg-slate-50/40 p-3 transition">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-2.5">
-                                    <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-100 text-sm text-emerald-700">&#128100;</span>
+                                    <span class="flex h-8 w-8 items-center justify-center rounded-lg {{ $pribadiSelesai ? 'bg-emerald-100 text-sm text-emerald-700' : 'pmb-icon-blue' }}">&#128100;</span>
                                     <div>
                                         <div class="text-xs font-bold text-slate-800">Data Pribadi</div>
-                                        <div class="text-[10px] font-semibold uppercase tracking-wide text-emerald-700">Selesai</div>
+                                        <div class="text-[10px] font-semibold uppercase tracking-wide {{ $pribadiSelesai ? 'text-emerald-700' : ($pribadiPct > 0 ? 'text-amber-600' : 'text-slate-400') }}">
+                                            {{ $pribadiSelesai ? 'Selesai' : ($pribadiPct > 0 ? 'Sebagian (' . $pribadiTerisi . '/' . count($pribadiFields) . ')' : 'Belum dilengkapi') }}
+                                        </div>
                                     </div>
                                 </div>
-                                <span class="text-xs font-bold text-emerald-700">100%</span>
+                                <span class="text-xs font-bold {{ $pribadiSelesai ? 'text-emerald-700' : ($pribadiPct > 0 ? 'text-amber-600' : 'text-slate-400') }}">{{ $pribadiPct }}%</span>
                             </div>
                             <div class="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
-                                <div class="h-full w-full rounded-full bg-emerald-500"></div>
+                                <div class="h-full rounded-full bg-emerald-500 transition-all" style="width: {{ $pribadiPct }}%;"></div>
                             </div>
                         </a>
 
-                        <a href="{{ route('keluarga.index') }}" class="block rounded-xl border border-slate-200/80 bg-slate-50/40 p-3 transition hover:border-slate-300">
+                        <a href="{{ route('keluarga.index') }}" class="block rounded-xl border {{ $keluargaSelesai ? 'border-emerald-200/90 hover:border-emerald-300' : 'border-slate-200/80 hover:border-slate-300' }} bg-slate-50/40 p-3 transition">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-2.5">
-                                    <span class="pmb-icon-blue">&#128106;</span>
+                                    <span class="flex h-8 w-8 items-center justify-center rounded-lg {{ $keluargaSelesai ? 'bg-emerald-100 text-sm text-emerald-700' : 'pmb-icon-blue' }}">&#128106;</span>
                                     <div>
                                         <div class="text-xs font-bold text-slate-800">Data Keluarga</div>
-                                        <div class="text-[10px] font-semibold uppercase tracking-wide text-slate-400">Belum ditambahkan</div>
+                                        <div class="text-[10px] font-semibold uppercase tracking-wide {{ $keluargaSelesai ? 'text-emerald-700' : 'text-slate-400' }}">
+                                            {{ $keluargaSelesai ? 'Selesai (' . $keluargaCount . ' data)' : 'Belum ditambahkan' }}
+                                        </div>
                                     </div>
                                 </div>
-                                <span class="text-xs font-semibold text-slate-400">0%</span>
+                                <span class="text-xs font-bold {{ $keluargaSelesai ? 'text-emerald-700' : 'text-slate-400' }}">{{ $keluargaPct }}%</span>
                             </div>
                             <div class="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
-                                <div class="h-full w-0 rounded-full bg-emerald-500"></div>
+                                <div class="h-full rounded-full bg-emerald-500 transition-all" style="width: {{ $keluargaPct }}%;"></div>
                             </div>
                         </a>
 
-                        <a href="{{ route('profile.edit') }}" class="block rounded-xl border border-slate-200/80 bg-slate-50/40 p-3 transition hover:border-slate-300">
+                        <a href="{{ route('pendidikan.index') }}" class="block rounded-xl border {{ $pendidikanSelesai ? 'border-emerald-200/90 hover:border-emerald-300' : 'border-slate-200/80 hover:border-slate-300' }} bg-slate-50/40 p-3 transition">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-2.5">
-                                    <span class="pmb-icon-blue">&#127891;</span>
+                                    <span class="flex h-8 w-8 items-center justify-center rounded-lg {{ $pendidikanSelesai ? 'bg-emerald-100 text-sm text-emerald-700' : 'pmb-icon-blue' }}">&#127891;</span>
                                     <div>
                                         <div class="text-xs font-bold text-slate-800">Riwayat Pendidikan</div>
-                                        <div class="text-[10px] font-semibold uppercase tracking-wide text-slate-400">Belum ditambahkan</div>
+                                        <div class="text-[10px] font-semibold uppercase tracking-wide {{ $pendidikanSelesai ? 'text-emerald-700' : 'text-slate-400' }}">
+                                            {{ $pendidikanSelesai ? 'Selesai (' . $pendidikanCount . ' data)' : 'Belum ditambahkan' }}
+                                        </div>
                                     </div>
                                 </div>
-                                <span class="text-xs font-semibold text-slate-400">0%</span>
+                                <span class="text-xs font-bold {{ $pendidikanSelesai ? 'text-emerald-700' : 'text-slate-400' }}">{{ $pendidikanPct }}%</span>
                             </div>
                             <div class="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
-                                <div class="h-full w-0 rounded-full bg-emerald-500"></div>
+                                <div class="h-full rounded-full bg-emerald-500 transition-all" style="width: {{ $pendidikanPct }}%;"></div>
                             </div>
                         </a>
 
@@ -476,13 +506,23 @@
                     </div>
                 </div>
 
-                <a href="{{ route('profile.edit') }}" class="mt-4 flex items-center gap-3 rounded-xl border border-amber-200 bg-amber-50/60 p-3 transition hover:bg-amber-50">
-                    <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-amber-100 text-xs font-bold text-amber-700">!</span>
-                    <div>
-                        <div class="text-xs font-bold text-amber-900">Profil Belum Lengkap</div>
-                        <div class="text-[11px] text-amber-700">Klik untuk melengkapi data keluarga, pendidikan, dan foto profil</div>
+                @if ($semuaLengkap)
+                    <div class="mt-4 flex items-center gap-3 rounded-xl border border-emerald-200 bg-emerald-50/70 p-3">
+                        <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-xs font-bold text-emerald-700">&#10003;</span>
+                        <div>
+                            <div class="text-xs font-bold text-emerald-900">Data Pribadi &amp; Keluarga Lengkap</div>
+                            <div class="text-[11px] text-emerald-700">Anda dapat melanjutkan pengisian pendidikan, foto profil, dan pilihan prodi</div>
+                        </div>
                     </div>
-                </a>
+                @else
+                    <a href="{{ route('profile.edit') }}" class="mt-4 flex items-center gap-3 rounded-xl border border-amber-200 bg-amber-50/60 p-3 transition hover:bg-amber-50">
+                        <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-amber-100 text-xs font-bold text-amber-700">!</span>
+                        <div>
+                            <div class="text-xs font-bold text-amber-900">Profil Belum Lengkap</div>
+                            <div class="text-[11px] text-amber-700">Klik untuk melengkapi data pribadi, keluarga, pendidikan, dan foto profil</div>
+                        </div>
+                    </a>
+                @endif
             </div>
         </section>
 
