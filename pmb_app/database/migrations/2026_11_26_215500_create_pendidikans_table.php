@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -15,7 +15,6 @@ return new class extends Migration
             $table->string('nama_sekolah', 150);
             $table->string('jurusan', 120)->nullable();
             $table->unsignedSmallInteger('tahun_lulus');
-            $table->string('no_ijazah', 80)->nullable();
             $table->timestamps();
         });
     }

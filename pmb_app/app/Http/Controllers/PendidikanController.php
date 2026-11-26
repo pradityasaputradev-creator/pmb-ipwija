@@ -47,7 +47,6 @@ class PendidikanController extends Controller
             'nama_sekolah' => $data['nama_sekolah'],
             'jurusan' => $data['jurusan'] ?? null,
             'tahun_lulus' => (int) $data['tahun_lulus'],
-            'no_ijazah' => null,
         ]);
 
         return redirect()
@@ -71,7 +70,6 @@ class PendidikanController extends Controller
             'nama_sekolah' => $data['nama_sekolah'],
             'jurusan' => $data['jurusan'] ?? null,
             'tahun_lulus' => (int) $data['tahun_lulus'],
-            'no_ijazah' => null,
         ]);
 
         return redirect()
