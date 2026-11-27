@@ -247,6 +247,7 @@
 <body>
     @php
         $user = auth()->user();
+        $pathFoto = $fotoCalonMahasiswa?->path_foto ?? $user?->fotoCalonMahasiswa?->path_foto;
         $nama = $user?->name ?? 'Calon Mahasiswa';
         $email = $user?->email ?? '-';
         $parts = preg_split('/\s+/', trim($nama));
@@ -317,11 +318,23 @@
 
                 <div class="flex flex-col gap-4 sm:flex-row">
                     <div class="flex shrink-0 flex-col items-center">
-                        <div class="pmb-avatar-box">{{ $inisial }}</div>
-                        <a href="{{ route('profile.edit') }}" class="mt-2 inline-flex items-center gap-1 rounded-md border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-medium text-slate-700 transition hover:bg-slate-50">
+                        @if (!empty($pathFoto))
+                            <img
+                                src="{{ asset('storage/' . $pathFoto) }}"
+                                alt="Foto {{ $nama }}"
+                                class="h-20 w-20 rounded-xl border border-slate-200 object-cover shadow-xs"
+                            >
+                        @else
+                            <div class="pmb-avatar-box">{{ $inisial }}</div>
+                        @endif
+                        <button
+                            type="button"
+                            onclick="bukaModalFoto()"
+                            class="mt-2 inline-flex items-center gap-1 rounded-md border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-medium text-slate-700 transition hover:bg-slate-50"
+                        >
                             <span>&#128247;</span>
-                            <span>Ganti Foto</span>
-                        </a>
+                            <span>{{ !empty($pathFoto) ? 'Ganti Foto' : 'Upload Foto' }}</span>
+                        </button>
                     </div>
 
                     <div class="min-w-0 flex-1 space-y-2.5 text-xs">
@@ -382,18 +395,41 @@
                             </div>
                         </div>
 
+                        @php
+                            $pendidikanTerakhir = isset($daftarPendidikan) ? $daftarPendidikan->last() : null;
+                        @endphp
                         <div class="pt-1">
                             <div class="mb-1.5 flex items-center justify-between">
                                 <span class="text-xs font-bold text-slate-800">Pendidikan Terakhir</span>
                                 <a href="{{ route('pendidikan.index') }}" class="pmb-link-blue text-[11px]">Lihat Semua</a>
                             </div>
-                            <a href="{{ route('profile.edit') }}" class="flex items-center gap-2.5 rounded-lg border border-slate-200/80 bg-slate-50/70 px-3 py-2.5 text-xs transition hover:bg-slate-100/70">
-                                <span class="text-base" style="color:#08467d;">&#127891;</span>
-                                <div>
-                                    <div class="font-bold text-slate-800">Belum dilengkapi</div>
-                                    <div class="text-[11px] text-slate-400">SMA/SMK/MA atau Sederajat</div>
-                                </div>
-                            </a>
+                            @if ($pendidikanTerakhir)
+                                <a href="{{ route('pendidikan.index') }}" class="flex items-center gap-2.5 rounded-lg border border-slate-200/80 bg-slate-50/70 px-3 py-2.5 text-xs transition hover:bg-slate-100/70">
+                                    <span class="text-base" style="color:#08467d;">&#127891;</span>
+                                    <div class="min-w-0">
+                                        <div class="font-bold text-slate-800">
+                                            {{ filled($pendidikanTerakhir->jenjang) ? $pendidikanTerakhir->jenjang : 'Pendidikan Terakhir' }}
+                                            @if (filled($pendidikanTerakhir->tahun_lulus))
+                                                <span class="font-normal text-slate-500">({{ $pendidikanTerakhir->tahun_lulus }})</span>
+                                            @endif
+                                        </div>
+                                        <div class="truncate text-[11px] text-slate-600">
+                                            {{ filled($pendidikanTerakhir->nama_sekolah) ? $pendidikanTerakhir->nama_sekolah : '-' }}
+                                            @if (filled($pendidikanTerakhir->jurusan))
+                                                &middot; {{ $pendidikanTerakhir->jurusan }}
+                                            @endif
+                                        </div>
+                                    </div>
+                                </a>
+                            @else
+                                <a href="{{ route('profile.edit') }}" class="flex items-center gap-2.5 rounded-lg border border-slate-200/80 bg-slate-50/70 px-3 py-2.5 text-xs transition hover:bg-slate-100/70">
+                                    <span class="text-base" style="color:#08467d;">&#127891;</span>
+                                    <div>
+                                        <div class="font-bold text-slate-800">Belum dilengkapi</div>
+                                        <div class="text-[11px] text-slate-400">SMA/SMK/MA atau Sederajat</div>
+                                    </div>
+                                </a>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -488,21 +524,21 @@
                             </div>
                         </a>
 
-                        <a href="{{ route('profile.edit') }}" class="block rounded-xl border border-slate-200/80 bg-slate-50/40 p-3 transition hover:border-slate-300">
+                        <button type="button" onclick="bukaModalFoto()" class="block w-full text-left rounded-xl border {{ !empty($pathFoto) ? 'border-emerald-200/90 hover:border-emerald-300' : 'border-slate-200/80 hover:border-slate-300' }} bg-slate-50/40 p-3 transition">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-2.5">
-                                    <span class="pmb-icon-blue">&#128247;</span>
+                                    <span class="flex h-8 w-8 items-center justify-center rounded-lg {{ !empty($pathFoto) ? 'bg-emerald-100 text-sm text-emerald-700' : 'pmb-icon-blue' }}">&#128247;</span>
                                     <div>
                                         <div class="text-xs font-bold text-slate-800">Foto Profil</div>
-                                        <div class="text-[10px] font-semibold uppercase tracking-wide text-slate-400">Belum diupload</div>
+                                        <div class="text-[10px] font-semibold uppercase tracking-wide {{ !empty($pathFoto) ? 'text-emerald-600' : 'text-slate-400' }}">{{ !empty($pathFoto) ? 'Sudah diupload' : 'Belum diupload' }}</div>
                                     </div>
                                 </div>
-                                <span class="text-xs font-semibold text-slate-400">0%</span>
+                                <span class="text-xs font-semibold {{ !empty($pathFoto) ? 'text-emerald-600' : 'text-slate-400' }}">{{ !empty($pathFoto) ? '100%' : '0%' }}</span>
                             </div>
                             <div class="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
-                                <div class="h-full w-0 rounded-full bg-emerald-500"></div>
+                                <div class="h-full rounded-full bg-emerald-500 transition-all" style="width: {{ !empty($pathFoto) ? '100%' : '0%' }};"></div>
                             </div>
-                        </a>
+                        </button>
                     </div>
                 </div>
 
@@ -706,3 +742,95 @@
     </main>
 </body>
 </html>
+
+    <div id="modalUploadFoto" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/50 p-4 backdrop-blur-[1px]">
+        <div class="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl border border-slate-200 bg-white p-5 shadow-xl">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">Upload Foto Calon Mahasiswa</h3>
+                    <p class="text-[11px] text-slate-500">Format JPG, JPEG, PNG, atau WEBP (maks. 2 MB)</p>
+                </div>
+                <button type="button" onclick="tutupModalFoto()" class="rounded-lg px-2 py-1 text-xs font-semibold text-slate-400 hover:bg-slate-100 hover:text-slate-700">&times;</button>
+            </div>
+
+            <form action="{{ route('dashboard.foto.update') }}" method="POST" enctype="multipart/form-data" class="mt-4 space-y-4">
+                @csrf
+
+                <div class="flex items-center gap-4 rounded-xl border border-slate-200 bg-slate-50 p-3.5">
+                    <div class="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-slate-200 bg-white">
+                        @if (!empty($pathFoto))
+                            <img id="previewFotoImg" src="{{ asset('storage/' . $pathFoto) }}" alt="Preview Foto" class="h-full w-full object-cover">
+                            <span id="previewFotoInisial" class="hidden text-lg font-bold text-[#08467d]">{{ $inisial }}</span>
+                        @else
+                            <img id="previewFotoImg" src="" alt="Preview Foto" class="hidden h-full w-full object-cover">
+                            <span id="previewFotoInisial" class="text-lg font-bold text-[#08467d]">{{ $inisial }}</span>
+                        @endif
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <label for="inputFotoCalon" class="block text-xs font-semibold text-slate-800">Pilih File Foto</label>
+                        <input
+                            id="inputFotoCalon"
+                            type="file"
+                            name="foto"
+                            accept="image/jpeg,image/png,image/webp"
+                            required
+                            onchange="previewFotoDipilih(this)"
+                            class="mt-1.5 block w-full text-[11px] text-slate-600 file:mr-2.5 file:rounded-lg file:border-0 file:bg-[#08467d] file:px-3 file:py-1.5 file:text-[11px] file:font-semibold file:text-white hover:file:bg-[#063661]"
+                        >
+                        @error('foto')
+                            <p class="mt-1 text-[11px] font-medium text-rose-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-end gap-2 pt-1">
+                    <button type="button" onclick="tutupModalFoto()" class="rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">
+                        Batal
+                    </button>
+                    <button type="submit" style="background-color: #08467d; color: #ffffff;" class="rounded-lg bg-[#08467d] px-4 py-2 text-xs font-semibold text-white hover:bg-[#063661]">
+                        Simpan Foto
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function bukaModalFoto() {
+            const modal = document.getElementById('modalUploadFoto');
+            if (!modal) return;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function tutupModalFoto() {
+            const modal = document.getElementById('modalUploadFoto');
+            if (!modal) return;
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function previewFotoDipilih(input) {
+            const img = document.getElementById('previewFotoImg');
+            const inisial = document.getElementById('previewFotoInisial');
+            if (!input.files || !input.files[0]) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                if (img) {
+                    img.src = e.target.result;
+                    img.classList.remove('hidden');
+                }
+                if (inisial) {
+                    inisial.classList.add('hidden');
+                }
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+
+        @error('foto')
+        document.addEventListener('DOMContentLoaded', function () {
+            bukaModalFoto();
+        });
+        @enderror
+    </script>
