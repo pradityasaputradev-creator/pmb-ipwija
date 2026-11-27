@@ -608,7 +608,7 @@
                     <div>Periode: <span class="font-semibold text-slate-700">2026/2027</span></div>
                     <span class="pmb-pill-blue">
                         <span style="width:6px;height:6px;border-radius:9999px;background-color:#08467d;"></span>
-                        {{ strtoupper($prodiSelesai ? 'Menunggu Persetujuan Admin' : 'Pengisian Data') }}
+                        {{ strtoupper($langkah2Selesai ? 'Menunggu Persetujuan Admin' : ($prodiSelesai ? 'Prodi Terpilih - Melengkapi Data' : 'Pengisian Data')) }}
                     </span>
                 </div>
 
@@ -632,7 +632,7 @@
                                 </span>
                             @else
                                 <span class="inline-flex items-center gap-1 rounded-md bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-800">
-                                    &#9200; {{ $prodiSelesai ? 'Menunggu Persetujuan Admin' : 'Pengisian Data' }}
+                                    &#9200; {{ $langkah2Selesai ? 'Menunggu Persetujuan Admin' : ($prodiSelesai ? 'Prodi Terpilih - Melengkapi Data' : 'Pengisian Data') }}
                                 </span>
                             @endif
                         </div>
@@ -738,6 +738,16 @@
                         <span>&rarr;</span>
                     </a>
                 </div>
+            @elseif (! $langkah2Selesai)
+                <div class="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-sky-200/80 bg-sky-50/50 px-4 py-3">
+                    <div class="flex items-center gap-2 text-xs font-semibold text-sky-900">
+                        <span style="width:8px;height:8px;border-radius:9999px;background-color:#08467d;display:inline-block;"></span>
+                        <span>Prodi Terpilih - Melengkapi Data</span>
+                    </div>
+                    <span class="rounded-md bg-sky-100 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-sky-800">
+                        Lengkapi Data
+                    </span>
+                </div>
             @else
                 <div class="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-amber-200/80 bg-amber-50/50 px-4 py-3">
                     <div class="flex items-center gap-2 text-xs font-semibold text-amber-900">
@@ -822,7 +832,7 @@
                 </div>
                 <div class="rounded-xl border border-slate-200/80 bg-slate-50/70 p-3">
                     <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Status Pendaftaran</div>
-                    <div class="mt-1 text-xs font-bold text-amber-700">{{ $prodiSelesai ? 'Menunggu Persetujuan Admin' : 'Pengisian Data' }}</div>
+                    <div class="mt-1 text-xs font-bold text-amber-700">{{ $langkah2Selesai ? 'Menunggu Persetujuan Admin' : ($prodiSelesai ? 'Prodi Terpilih - Melengkapi Data' : 'Pengisian Data') }}</div>
                 </div>
             </div>
 
