@@ -27,11 +27,18 @@ Route::post('/program-studi/pilih', function (Request $request) {
         'sistem_kuliah' => ['nullable', 'string', 'max:255'],
     ]);
 
-    $request->user()->update($validated);
+    $user = $request->user();
+    $hadProdi = filled($user->pilihan_prodi);
+
+    $user->update($validated);
+
+    $message = $hadProdi
+        ? 'Pilihan program studi berhasil diubah.'
+        : 'Pilihan program studi berhasil disimpan.';
 
     return redirect()
         ->route('dashboard')
-        ->with('status', 'Pilihan program studi berhasil disimpan.');
+        ->with('status', $message);
 })->middleware(['auth'])->name('program-studi.pilih');
 
 Route::get('/jalur-pendaftaran', function () {
