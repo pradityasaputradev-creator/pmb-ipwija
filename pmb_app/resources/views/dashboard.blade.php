@@ -472,6 +472,18 @@
                 $keluargaCount = isset($daftarKeluarga) ? $daftarKeluarga->count() : 0;
                 $keluargaSelesai = $keluargaCount > 0;
                 $keluargaPct = $keluargaSelesai ? 100 : 0;
+                $bioSelesai = (bool) ($pribadiSelesai ?? false);
+                $famSelesai = (bool) ($keluargaSelesai ?? false);
+                $eduSelesai = (bool) ($pendidikanSelesai ?? false);
+                $langkah2Selesai = $prodiSelesai && $bioSelesai && $famSelesai && $eduSelesai;
+                $subteksLangkah2 = $langkah2Selesai
+                    ? 'Pilihan program studi dan seluruh data tambahan sudah lengkap.'
+                    : 'Lengkapi pilihan program studi serta data pribadi, keluarga, dan pendidikan.';
+                $progresPendaftaranPct = min(100, (int) (25
+                    + ($prodiSelesai ? 25 : 0)
+                    + ($bioSelesai ? 20 : 0)
+                    + ($famSelesai ? 15 : 0)
+                    + ($eduSelesai ? 15 : 0)));
 
                 $pendidikanCount = isset($daftarPendidikan) ? $daftarPendidikan->count() : 0;
                 $pendidikanSelesai = $pendidikanCount > 0;
