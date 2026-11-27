@@ -612,6 +612,15 @@
                     </span>
                 </div>
 
+                @if (session('status'))
+                    <div class="mb-4 flex items-center justify-between gap-3 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-xs sm:text-sm font-semibold text-emerald-900 shadow-xs">
+                        <div class="flex items-center gap-2">
+                            <span style="width:8px;height:8px;border-radius:9999px;background-color:#059669;display:inline-block;"></span>
+                            <span>{{ session('status') }}</span>
+                        </div>
+                    </div>
+                @endif
+
                 <h2 class="mb-3 text-base font-bold text-slate-900">Informasi Pendaftaran</h2>
 
                 <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
