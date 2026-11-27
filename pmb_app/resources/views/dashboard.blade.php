@@ -676,14 +676,28 @@
                     <h2 class="text-base font-bold text-slate-900">Progres Pendaftaran</h2>
                     <p class="text-xs text-slate-500">Pelengkapan data &amp; tahapan pendaftaran</p>
                 </div>
+                @php
+                    $prodiSelesai = !empty($user->pilihan_prodi);
+                    $bioSelesai = (bool) ($pribadiSelesai ?? false);
+                    $famSelesai = (bool) ($keluargaSelesai ?? false);
+                    $eduSelesai = (bool) ($pendidikanSelesai ?? false);
+
+                    $progresPendaftaranPct = 25
+                        + ($prodiSelesai ? 25 : 0)
+                        + ($bioSelesai ? 20 : 0)
+                        + ($famSelesai ? 15 : 0)
+                        + ($eduSelesai ? 15 : 0);
+
+                    $progresPendaftaranPct = min(100, (int) $progresPendaftaranPct);
+                @endphp
                 <div class="text-right">
-                    <div class="text-xl font-extrabold" style="color:#08467d;">20%</div>
+                    <div class="text-xl font-extrabold" style="color:#08467d;">{{ $progresPendaftaranPct }}%</div>
                     <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Selesai</div>
                 </div>
             </div>
 
             <div class="mt-3 h-2 w-full overflow-hidden rounded-full bg-slate-100">
-                <div class="h-full w-1/5 rounded-full" style="background-color:#08467d;"></div>
+                <div class="h-full rounded-full transition-all duration-300" style="width: {{ $progresPendaftaranPct }}%; background-color:#08467d;"></div>
             </div>
 
             <div class="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-200/70 bg-slate-50/60 px-4 py-3">
@@ -691,7 +705,7 @@
                     <span style="width:8px;height:8px;border-radius:9999px;background-color:#08467d;display:inline-block;"></span>
                     <span>Pemilihan Program Studi</span>
                 </div>
-                <a href="{{ route('profile.edit') }}" class="pmb-btn-primary">
+                <a href="{{ route('program-studi.index') }}" class="pmb-btn-primary">
                     <span>Lengkapi Data</span>
                     <span>&rarr;</span>
                 </a>

@@ -70,10 +70,10 @@
                     <p class="mt-1 text-xs sm:text-sm text-sky-100/90">Universitas IPWIJA &bull; Tahun Akademik 2026/2027</p>
                 </div>
                 <a
-                    href="{{ route('login') }}"
+                    href="{{ auth()->check() ? route('dashboard') : route('login') }}"
                     class="inline-flex items-center gap-1.5 self-start sm:self-auto rounded-lg bg-white/15 hover:bg-white/25 border border-white/25 px-3.5 py-2 text-xs font-semibold text-white transition"
                 >
-                    &larr; Kembali ke Halaman Masuk
+                    &larr; {{ auth()->check() ? 'Kembali ke Dashboard' : 'Kembali ke Halaman Masuk' }}
                 </a>
             </div>
         </div>
@@ -81,6 +81,23 @@
 
     <!-- Konten Utama -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-12 pb-14 space-y-6 relative z-10">
+
+        @auth
+            @if (auth()->user()->pilihan_prodi)
+                <div class="rounded-2xl bg-emerald-50 border border-emerald-200 px-5 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs sm:text-sm text-emerald-900">
+                    <div>
+                        <span class="font-bold">Program Studi Terpilih Saat Ini:</span>
+                        <span class="font-semibold">{{ auth()->user()->pilihan_prodi }}</span>
+                        @if (auth()->user()->sistem_kuliah)
+                            <span class="text-emerald-700">&bull; {{ auth()->user()->sistem_kuliah }}</span>
+                        @endif
+                    </div>
+                    <a href="{{ route('dashboard') }}" class="font-bold text-emerald-800 underline hover:text-emerald-950">
+                        Lihat di Dashboard &rarr;
+                    </a>
+                </div>
+            @endif
+        @endauth
 
         <!-- Kartu Filter: Cari Jalur Pendaftaran -->
         <div id="cari-jalur" class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-5 sm:p-6">
@@ -284,21 +301,54 @@
 
             <div id="detail-konten" class="mt-4 space-y-3 text-xs sm:text-sm text-slate-600 leading-relaxed"></div>
 
-            <div class="mt-6 flex flex-wrap items-center justify-end gap-2.5 border-t border-slate-100 pt-4">
-                <a
-                    href="{{ route('register') }}"
-                    class="rounded-lg bg-[#0b4f8a] hover:bg-[#083b69] px-4 py-2 text-xs font-semibold text-white transition"
-                >
-                    Daftar Program Ini
-                </a>
-                <button
-                    type="button"
-                    onclick="tutupModalDetail()"
-                    class="rounded-lg border border-slate-200 bg-white hover:bg-slate-50 px-4 py-2 text-xs font-semibold text-slate-700 transition cursor-pointer"
-                >
-                    Tutup
-                </button>
-            </div>
+            @auth
+                <form id="form-pilih-prodi" method="POST" action="{{ route('program-studi.pilih') }}" class="mt-4 space-y-3 border-t border-slate-100 pt-4">
+                    @csrf
+                    <input type="hidden" id="input-fakultas" name="fakultas">
+                    <input type="hidden" id="input-program-pendidikan" name="program_pendidikan">
+                    <input type="hidden" id="input-pilihan-prodi" name="pilihan_prodi">
+
+                    <div>
+                        <label for="select-sistem-kuliah" class="block text-xs font-bold text-slate-700 mb-1">
+                            Pilih Sistem Kuliah
+                        </label>
+                        <select id="select-sistem-kuliah" name="sistem_kuliah" class="w-full rounded-lg border-slate-300 text-xs sm:text-sm text-slate-700 focus:border-[#0b4f8a] focus:ring-[#0b4f8a]">
+                        </select>
+                    </div>
+
+                    <div class="flex flex-wrap items-center justify-end gap-2.5 pt-2">
+                        <button
+                            type="submit"
+                            class="rounded-lg bg-[#0b4f8a] hover:bg-[#083b69] px-4 py-2 text-xs font-semibold text-white transition cursor-pointer"
+                        >
+                            Simpan Pilihan Program Studi
+                        </button>
+                        <button
+                            type="button"
+                            onclick="tutupModalDetail()"
+                            class="rounded-lg border border-slate-200 bg-white hover:bg-slate-50 px-4 py-2 text-xs font-semibold text-slate-700 transition cursor-pointer"
+                        >
+                            Tutup
+                        </button>
+                    </div>
+                </form>
+            @else
+                <div class="mt-6 flex flex-wrap items-center justify-end gap-2.5 border-t border-slate-100 pt-4">
+                    <a
+                        href="{{ route('register') }}"
+                        class="rounded-lg bg-[#0b4f8a] hover:bg-[#083b69] px-4 py-2 text-xs font-semibold text-white transition"
+                    >
+                        Daftar Program Ini
+                    </a>
+                    <button
+                        type="button"
+                        onclick="tutupModalDetail()"
+                        class="rounded-lg border border-slate-200 bg-white hover:bg-slate-50 px-4 py-2 text-xs font-semibold text-slate-700 transition cursor-pointer"
+                    >
+                        Tutup
+                    </button>
+                </div>
+            @endauth
         </div>
     </div>
 
@@ -369,6 +419,7 @@
 
             const formPilih = document.getElementById('form-pilih-prodi');
             if (formPilih) {
+                formPilih.classList.remove('hidden');
                 document.getElementById('input-fakultas').value = item.fakultas || '';
                 document.getElementById('input-program-pendidikan').value = item.label_jenjang || '';
                 document.getElementById('input-pilihan-prodi').value = item.nama || '';
@@ -383,6 +434,7 @@
             modal.classList.remove('hidden');
             modal.classList.add('flex');
         }
+
         function bukaModalBiaya() {
             document.getElementById('detail-badge').textContent = 'Informasi Biaya & Brosur';
             document.getElementById('detail-judul').textContent = 'Rincian Biaya Kuliah Universitas IPWIJA';
@@ -394,6 +446,12 @@
                     <li><strong>Beasiswa:</strong> Tersedia jalur Beasiswa Prestasi Akademik, Non-Akademik, dan KIP-Kuliah.</li>
                 </ul>
             `;
+
+            const formPilih = document.getElementById('form-pilih-prodi');
+            if (formPilih) {
+                formPilih.classList.add('hidden');
+            }
+
             const modal = document.getElementById('modal-detail-prodi');
             modal.classList.remove('hidden');
             modal.classList.add('flex');
@@ -407,5 +465,3 @@
     </script>
 </body>
 </html>
-
-
