@@ -659,7 +659,8 @@
                             <h3 class="text-sm font-bold text-slate-900">Pilihan Program Studi</h3>
                             <a
                                 href="{{ route('program-studi.index') }}"
-                                class="inline-flex items-center gap-1 rounded-lg border border-[#08467d] bg-white px-3 py-1.5 text-[11px] font-semibold text-[#08467d] hover:bg-[#08467d] hover:text-white transition"
+                                style="color: #08467d; background-color: #ffffff;"
+                                class="inline-flex items-center gap-1 rounded-lg border border-[#08467d] px-3 py-1.5 text-[11px] font-semibold hover:bg-[#08467d] hover:text-white transition"
                             >
                                 {{ $user->pilihan_prodi ? 'Ubah Pilihan Prodi' : 'Pilih Program Studi' }}
                             </a>
