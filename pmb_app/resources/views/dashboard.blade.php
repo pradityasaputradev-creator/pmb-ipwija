@@ -729,15 +729,37 @@
                         <span class="rounded bg-emerald-100 px-2 py-0.5 text-[10px] font-bold uppercase text-emerald-700">Selesai</span>
                     </div>
 
-                    <div class="pmb-step-active flex items-center justify-between rounded-xl px-4 py-3">
+                    @php
+                        $langkah2Selesai = $prodiSelesai && $bioSelesai && $famSelesai && $eduSelesai;
+                        $belumDilengkapi = array_values(array_filter([
+                            !$prodiSelesai ? 'pilihan prodi' : null,
+                            !$bioSelesai ? 'biodata' : null,
+                            !$famSelesai ? 'keluarga' : null,
+                            !$eduSelesai ? 'pendidikan' : null,
+                        ]));
+                        $subteksLangkah2 = $langkah2Selesai
+                            ? 'Pilihan prodi, biodata, keluarga, dan pendidikan sudah lengkap'
+                            : (count($belumDilengkapi) > 0
+                                ? ($prodiSelesai ? 'Prodi terpilih · Lengkapi ' : 'Lengkapi ') . implode(', ', $belumDilengkapi)
+                                : 'Lengkapi biodata, keluarga, pendidikan, dan pilihan prodi');
+                    @endphp
+                    <div class="{{ $langkah2Selesai ? 'flex items-center justify-between rounded-xl border border-emerald-200/80 bg-emerald-50/40 px-4 py-3' : 'pmb-step-active flex items-center justify-between rounded-xl px-4 py-3' }}">
                         <div class="flex items-center gap-3">
-                            <span class="pmb-step-num-active">2</span>
+                            @if ($langkah2Selesai)
+                                <span class="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-600 text-xs font-bold text-white">&#10003;</span>
+                            @else
+                                <span class="pmb-step-num-active">2</span>
+                            @endif
                             <div>
                                 <div class="text-xs font-bold text-slate-800 sm:text-sm">Pemilihan Program Studi &amp; Data Tambahan</div>
-                                <div class="text-xs text-slate-500">Lengkapi biodata, keluarga, pendidikan, dan pilihan prodi</div>
+                                <div class="text-xs text-slate-500">{{ $subteksLangkah2 }}</div>
                             </div>
                         </div>
-                        <span class="pmb-step-badge-active">Sedang Berlangsung</span>
+                        @if ($langkah2Selesai)
+                            <span class="rounded bg-emerald-100 px-2 py-0.5 text-[10px] font-bold uppercase text-emerald-700">Selesai</span>
+                        @else
+                            <span class="pmb-step-badge-active">Sedang Berlangsung</span>
+                        @endif
                     </div>
 
                     <div class="flex items-center justify-between rounded-xl border border-slate-200/70 bg-white px-4 py-3">
