@@ -578,8 +578,22 @@
                 <div class="mt-6">
                     <div class="mb-3 flex items-center gap-2">
                         <span class="text-sm" style="color:#08467d;">&#127891;</span>
-                        <h3 class="text-sm font-bold text-slate-900">Pilihan Program Studi</h3>
+                        <div class="flex flex-wrap items-center justify-between gap-2 w-full">
+                            <h3 class="text-sm font-bold text-slate-900">Pilihan Program Studi</h3>
+                            <a
+                                href="{{ route('program-studi.index') }}"
+                                class="inline-flex items-center gap-1 rounded-lg border border-[#08467d] bg-white px-3 py-1.5 text-[11px] font-semibold text-[#08467d] hover:bg-[#08467d] hover:text-white transition"
+                            >
+                                {{ $user->pilihan_prodi ? 'Ubah Pilihan Prodi' : 'Pilih Program Studi' }}
+                            </a>
+                        </div>
                     </div>
+
+                    @if (session('status'))
+                        <div class="mb-3 rounded-lg border border-emerald-200 bg-emerald-50 px-3.5 py-2 text-xs font-medium text-emerald-800">
+                            {{ session('status') }}
+                        </div>
+                    @endif
 
                     <div class="overflow-x-auto rounded-lg border border-slate-200">
                         <table class="w-full text-left text-xs">
@@ -597,10 +611,14 @@
                                     <td class="px-3.5 py-3">
                                         <span class="inline-flex h-5 w-5 items-center justify-center rounded-full text-[11px] font-bold" style="background-color:#dbeafe;color:#08467d;">1</span>
                                     </td>
-                                    <td class="px-3.5 py-3 text-slate-500">-</td>
-                                    <td class="px-3.5 py-3 text-slate-500">-</td>
-                                    <td class="px-3.5 py-3 font-medium text-slate-600">Belum dipilih</td>
-                                    <td class="px-3.5 py-3 text-slate-400">Menunggu pemilihan</td>
+                                    <td class="px-3.5 py-3 text-slate-700">{{ $user->fakultas ?: '-' }}</td>
+                                    <td class="px-3.5 py-3 text-slate-700">{{ $user->program_pendidikan ?: '-' }}</td>
+                                    <td class="px-3.5 py-3 font-semibold text-slate-900">
+                                        {{ $user->pilihan_prodi ?: 'Belum dipilih' }}
+                                    </td>
+                                    <td class="px-3.5 py-3 {{ $user->sistem_kuliah ? 'text-emerald-700 font-medium' : 'text-slate-400' }}">
+                                        {{ $user->sistem_kuliah ? 'Sistem Kuliah: ' . $user->sistem_kuliah : 'Menunggu pemilihan' }}
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>

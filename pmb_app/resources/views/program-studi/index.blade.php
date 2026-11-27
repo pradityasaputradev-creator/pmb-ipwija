@@ -9,12 +9,12 @@
 <body class="min-h-screen bg-[#f4f6f9] text-slate-800 antialiased">
     @php
         $daftarProdi = [
-            ['jenjang' => 'D3', 'label_jenjang' => 'D3 - Diploma 3', 'nama' => 'D3 - Kebidanan', 'jalur' => 'Tersedia 1 Jalur Pendaftaran', 'sistem' => ['Reguler Pagi', 'Kelas Karyawan'], 'akreditasi' => 'Baik Sekali', 'deskripsi' => 'Program vokasi kebidanan yang berfokus pada praktik klinik, pelayanan kesehatan ibu dan anak, serta kesiapan kerja profesional.'],
-            ['jenjang' => 'S1', 'label_jenjang' => 'S1 - Strata 1', 'nama' => 'S1 - Informatika', 'jalur' => 'Tersedia 3 Jalur Pendaftaran', 'sistem' => ['Reguler Pagi', 'Reguler Malam', 'Kelas Karyawan'], 'akreditasi' => 'Baik Sekali', 'deskripsi' => 'Mempelajari rekayasa perangkat lunak, kecerdasan buatan, pengembangan aplikasi web & mobile, serta keamanan siber.'],
-            ['jenjang' => 'S1', 'label_jenjang' => 'S1 - Strata 1', 'nama' => 'S1 - Kewirausahaan', 'jalur' => 'Tersedia 3 Jalur Pendaftaran', 'sistem' => ['Reguler Pagi', 'Reguler Malam', 'Kelas Karyawan'], 'akreditasi' => 'Baik Sekali', 'deskripsi' => 'Mencetak wirausaha muda kreatif dengan kurikulum berbasis inkubasi bisnis, digital marketing, dan manajemen startup.'],
-            ['jenjang' => 'S1', 'label_jenjang' => 'S1 - Strata 1', 'nama' => 'S1 - Manajemen', 'jalur' => 'Tersedia 3 Jalur Pendaftaran', 'sistem' => ['Reguler Pagi', 'Reguler Malam', 'Kelas Karyawan'], 'akreditasi' => 'Baik Sekali', 'deskripsi' => 'Fokus pada manajemen bisnis modern, keuangan, pemasaran, dan sumber daya manusia berbasis analisis data.'],
-            ['jenjang' => 'S1', 'label_jenjang' => 'S1 - Strata 1', 'nama' => 'S1 - Akuntansi', 'jalur' => 'Tersedia 2 Jalur Pendaftaran', 'sistem' => ['Reguler Pagi', 'Kelas Karyawan'], 'akreditasi' => 'Baik', 'deskripsi' => 'Membekali mahasiswa dengan kompetensi audit, perpajakan, akuntansi sektor publik, dan sistem informasi akuntansi.'],
-            ['jenjang' => 'S2', 'label_jenjang' => 'S2 - Pascasarjana', 'nama' => 'S2 - Magister Manajemen', 'jalur' => 'Tersedia 2 Jalur Pendaftaran', 'sistem' => ['Reguler Akhir Pekan', 'Kelas Eksekutif'], 'akreditasi' => 'Baik Sekali', 'deskripsi' => 'Program pascasarjana bagi profesional dan pemimpin organisasi untuk memperkuat strategi bisnis dan kepemimpinan.'],
+            ['jenjang' => 'D3', 'label_jenjang' => 'D3 - Diploma 3', 'fakultas' => 'Fakultas Ilmu Kesehatan', 'nama' => 'D3 - Kebidanan', 'jalur' => 'Tersedia 1 Jalur Pendaftaran', 'sistem' => ['Reguler Pagi', 'Kelas Karyawan'], 'akreditasi' => 'Baik Sekali', 'deskripsi' => 'Program vokasi kebidanan yang berfokus pada praktik klinik, pelayanan kesehatan ibu dan anak, serta kesiapan kerja profesional.'],
+            ['jenjang' => 'S1', 'label_jenjang' => 'S1 - Strata 1', 'fakultas' => 'Fakultas Teknologi Informasi', 'nama' => 'S1 - Informatika', 'jalur' => 'Tersedia 3 Jalur Pendaftaran', 'sistem' => ['Reguler Pagi', 'Reguler Malam', 'Kelas Karyawan'], 'akreditasi' => 'Baik Sekali', 'deskripsi' => 'Mempelajari rekayasa perangkat lunak, kecerdasan buatan, pengembangan aplikasi web & mobile, serta keamanan siber.'],
+            ['jenjang' => 'S1', 'label_jenjang' => 'S1 - Strata 1', 'fakultas' => 'Fakultas Ekonomi dan Bisnis', 'nama' => 'S1 - Kewirausahaan', 'jalur' => 'Tersedia 3 Jalur Pendaftaran', 'sistem' => ['Reguler Pagi', 'Reguler Malam', 'Kelas Karyawan'], 'akreditasi' => 'Baik Sekali', 'deskripsi' => 'Mencetak wirausaha muda kreatif dengan kurikulum berbasis inkubasi bisnis, digital marketing, dan manajemen startup.'],
+            ['jenjang' => 'S1', 'label_jenjang' => 'S1 - Strata 1', 'fakultas' => 'Fakultas Ekonomi dan Bisnis', 'nama' => 'S1 - Manajemen', 'jalur' => 'Tersedia 3 Jalur Pendaftaran', 'sistem' => ['Reguler Pagi', 'Reguler Malam', 'Kelas Karyawan'], 'akreditasi' => 'Baik Sekali', 'deskripsi' => 'Fokus pada manajemen bisnis modern, keuangan, pemasaran, dan sumber daya manusia berbasis analisis data.'],
+            ['jenjang' => 'S1', 'label_jenjang' => 'S1 - Strata 1', 'fakultas' => 'Fakultas Ekonomi dan Bisnis', 'nama' => 'S1 - Akuntansi', 'jalur' => 'Tersedia 2 Jalur Pendaftaran', 'sistem' => ['Reguler Pagi', 'Kelas Karyawan'], 'akreditasi' => 'Baik', 'deskripsi' => 'Membekali mahasiswa dengan kompetensi audit, perpajakan, akuntansi sektor publik, dan sistem informasi akuntansi.'],
+            ['jenjang' => 'S2', 'label_jenjang' => 'S2 - Pascasarjana', 'fakultas' => 'Program Pascasarjana', 'nama' => 'S2 - Magister Manajemen', 'jalur' => 'Tersedia 2 Jalur Pendaftaran', 'sistem' => ['Reguler Akhir Pekan', 'Kelas Eksekutif'], 'akreditasi' => 'Baik Sekali', 'deskripsi' => 'Program pascasarjana bagi profesional dan pemimpin organisasi untuk memperkuat strategi bisnis dan kepemimpinan.'],
         ];
     @endphp
 
@@ -360,15 +360,29 @@
             document.getElementById('detail-konten').innerHTML = `
                 <p>${item.deskripsi}</p>
                 <div class="rounded-xl bg-slate-50 border border-slate-200/80 p-3.5 space-y-1.5 text-xs">
+                    <p><strong>Fakultas:</strong> ${item.fakultas || '-'}</p>
+                    <p><strong>Program Pendidikan:</strong> ${item.label_jenjang}</p>
                     <p><strong>Status Jalur:</strong> ${item.jalur}</p>
                     <p><strong>Pilihan Sistem Kuliah:</strong> ${item.sistem.join(', ')}</p>
                 </div>
             `;
+
+            const formPilih = document.getElementById('form-pilih-prodi');
+            if (formPilih) {
+                document.getElementById('input-fakultas').value = item.fakultas || '';
+                document.getElementById('input-program-pendidikan').value = item.label_jenjang || '';
+                document.getElementById('input-pilihan-prodi').value = item.nama || '';
+
+                const selectSistem = document.getElementById('select-sistem-kuliah');
+                selectSistem.innerHTML = item.sistem
+                    .map(s => `<option value="${s}">${s}</option>`)
+                    .join('');
+            }
+
             const modal = document.getElementById('modal-detail-prodi');
             modal.classList.remove('hidden');
             modal.classList.add('flex');
         }
-
         function bukaModalBiaya() {
             document.getElementById('detail-badge').textContent = 'Informasi Biaya & Brosur';
             document.getElementById('detail-judul').textContent = 'Rincian Biaya Kuliah Universitas IPWIJA';
