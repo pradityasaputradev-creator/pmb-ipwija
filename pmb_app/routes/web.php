@@ -1,9 +1,12 @@
 <?php
 
+use App\Http\Controllers\KeluargaController;
+use App\Http\Controllers\PendidikanController;
 use App\Http\Controllers\ProfileController;
 use App\Models\FotoCalonMahasiswa;
 use App\Models\Keluarga;
 use App\Models\Pendidikan;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
@@ -88,15 +91,65 @@ Route::get('/admin/dashboard', function (Request $request) {
     }
 
     $tab = $request->query('tab', 'ringkasan');
-    $search = $request->query('search');
-    $statusFilter = $request->query('status');
-    $pendaftar = collect();
+    $search = trim((string) $request->query('q', ''));
+    $statusFilter = trim((string) $request->query('status', ''));
+
+    $totalAkun = User::count();
+    $totalCalonMahasiswa = User::where(function ($query) {
+        $query->whereNull('role')->orWhere('role', '!=', 'admin');
+    })->count();
+
+    $pendaftarQuery = User::query()
+        ->where(function ($query) {
+            $query->whereNull('role')->orWhere('role', '!=', 'admin');
+        })
+        ->withCount(['keluargas', 'pendidikans']);
+
+    if ($search !== '') {
+        $pendaftarQuery->where(function ($query) use ($search) {
+            $query->where('name', 'like', "%{$search}%")
+                ->orWhere('email', 'like', "%{$search}%")
+                ->orWhere('nik', 'like', "%{$search}%");
+        });
+    }
+
+    if ($statusFilter === 'lengkap') {
+        $pendaftarQuery
+            ->whereNotNull('nik')->where('nik', '!=', '')
+            ->whereNotNull('no_hp')->where('no_hp', '!=', '')
+            ->whereNotNull('alamat')->where('alamat', '!=', '')
+            ->has('keluargas')
+            ->has('pendidikans');
+    } elseif ($statusFilter === 'belum_lengkap') {
+        $pendaftarQuery->where(function ($query) {
+            $query->whereNull('nik')->orWhere('nik', '')
+                ->orWhereNull('no_hp')->orWhere('no_hp', '')
+                ->orWhereNull('alamat')->orWhere('alamat', '')
+                ->orDoesntHave('keluargas')
+                ->orDoesntHave('pendidikans');
+        });
+    }
+
+    $pendaftar = $pendaftarQuery
+        ->latest('id')
+        ->get();
+
     $pendaftarDetail = null;
+    if ($request->filled('detail')) {
+        $pendaftarDetail = User::with(['keluargas', 'pendidikans', 'fotoCalonMahasiswa'])
+            ->where(function ($query) {
+                $query->whereNull('role')->orWhere('role', '!=', 'admin');
+            })
+            ->whereKey($request->query('detail'))
+            ->first();
+    }
 
     return view('admin.dashboard', [
         'tab' => $tab,
         'search' => $search,
         'statusFilter' => $statusFilter,
+        'totalAkun' => $totalAkun,
+        'totalCalonMahasiswa' => $totalCalonMahasiswa,
         'pendaftar' => $pendaftar,
         'pendaftarDetail' => $pendaftarDetail,
     ]);
@@ -106,18 +159,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
-
-Route::middleware('auth')->group(function () {
-    Route::get('/keluarga', function () {
-        if (view()->exists('keluarga.index')) {
-            return view('keluarga.index');
-        }
-
-        return redirect()->route('profile.edit');
-    })->name('keluarga.index');
-
+    Route::get('/keluarga', [KeluargaController::class, 'keluarga'])->name('keluarga.index');
+    Route::post('/keluarga', [KeluargaController::class, 'store'])->name('keluarga.store');
+    Route::put('/keluarga/{keluarga}', [KeluargaController::class, 'update'])->name('keluarga.update');
+    Route::delete('/keluarga/{keluarga}', [KeluargaController::class, 'destroy'])->name('keluarga.destroy');
 
     Route::get('/program-studi', function () {
         if (view()->exists('program-studi.index')) {
@@ -127,81 +173,10 @@ Route::middleware('auth')->group(function () {
         return redirect()->route('profile.edit');
     })->name('program-studi.index');
 
-    Route::get('/pendidikan', function (Request $request) {
-        if (view()->exists('pendidikan.index')) {
-            $user = $request->user();
-            $daftarPendidikan = Pendidikan::where('user_id', $user->id)
-                ->orderBy('id')
-                ->get();
-
-            $pendidikanEdit = null;
-            if ($request->filled('edit')) {
-                $pendidikanEdit = Pendidikan::where('user_id', $user->id)
-                    ->whereKey($request->query('edit'))
-                    ->first();
-            }
-
-            return view('pendidikan.index', [
-                'daftarPendidikan' => $daftarPendidikan,
-                'pendidikanEdit' => $pendidikanEdit,
-            ]);
-        }
-
-        return redirect()->route('profile.edit');
-    })->name('pendidikan.index');
-
-    Route::post('/pendidikan', function (Request $request) {
-        $validated = $request->validate([
-            'jenjang' => ['required', 'string', 'max:100'],
-            'nama_sekolah' => ['required', 'string', 'max:255'],
-            'jurusan' => ['nullable', 'string', 'max:255'],
-            'tahun_lulus' => ['required', 'integer', 'min:1970', 'max:' . ((int) date('Y') + 1)],
-        ]);
-
-        Pendidikan::create([
-            'user_id' => $request->user()->id,
-            'jenjang' => $validated['jenjang'],
-            'nama_sekolah' => $validated['nama_sekolah'],
-            'jurusan' => $validated['jurusan'] ?? null,
-            'tahun_lulus' => $validated['tahun_lulus'],
-        ]);
-
-        return redirect()
-            ->route('pendidikan.index')
-            ->with('pendidikan_status', 'Data riwayat pendidikan berhasil disimpan.');
-    })->name('pendidikan.store');
-
-    Route::put('/pendidikan/{pendidikan}', function (Request $request, Pendidikan $pendidikan) {
-        abort_unless((int) $pendidikan->user_id === (int) $request->user()->id, 403);
-
-        $validated = $request->validate([
-            'jenjang' => ['required', 'string', 'max:100'],
-            'nama_sekolah' => ['required', 'string', 'max:255'],
-            'jurusan' => ['nullable', 'string', 'max:255'],
-            'tahun_lulus' => ['required', 'integer', 'min:1970', 'max:' . ((int) date('Y') + 1)],
-        ]);
-
-        $pendidikan->update([
-            'jenjang' => $validated['jenjang'],
-            'nama_sekolah' => $validated['nama_sekolah'],
-            'jurusan' => $validated['jurusan'] ?? null,
-            'tahun_lulus' => $validated['tahun_lulus'],
-        ]);
-
-        return redirect()
-            ->route('pendidikan.index')
-            ->with('pendidikan_status', 'Data riwayat pendidikan berhasil diperbarui.');
-    })->name('pendidikan.update');
-
-    Route::delete('/pendidikan/{pendidikan}', function (Request $request, Pendidikan $pendidikan) {
-        abort_unless((int) $pendidikan->user_id === (int) $request->user()->id, 403);
-
-        $pendidikan->delete();
-
-        return redirect()
-            ->route('pendidikan.index')
-            ->with('pendidikan_status', 'Data riwayat pendidikan berhasil dihapus.');
-    })->name('pendidikan.destroy');
+    Route::get('/pendidikan', [PendidikanController::class, 'index'])->name('pendidikan.index');
+    Route::post('/pendidikan', [PendidikanController::class, 'store'])->name('pendidikan.store');
+    Route::put('/pendidikan/{pendidikan}', [PendidikanController::class, 'update'])->name('pendidikan.update');
+    Route::delete('/pendidikan/{pendidikan}', [PendidikanController::class, 'destroy'])->name('pendidikan.destroy');
 });
 
 require __DIR__.'/auth.php';
