@@ -690,10 +690,10 @@
                     </div>
 
                     <div class="mt-3 flex justify-end">
-                        <a href="{{ route('profile.edit') }}" class="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3.5 py-1.5 text-xs font-semibold text-slate-700 transition hover:bg-slate-50">
+                        <button type="button" onclick="bukaModalDetailPendaftaran()" class="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3.5 py-1.5 text-xs font-semibold text-slate-700 transition hover:bg-slate-50">
                             <span>&#9432;</span>
                             <span>Detail Pendaftaran</span>
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -715,22 +715,28 @@
                 <div class="h-full rounded-full transition-all duration-300" style="width: {{ $progresPendaftaranPct }}%; background-color:#08467d;"></div>
             </div>
 
-            <div class="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-200/70 bg-slate-50/60 px-4 py-3">
-                <div class="flex items-center gap-2 text-xs font-semibold text-slate-700">
-                    <span style="width:8px;height:8px;border-radius:9999px;background-color:#08467d;display:inline-block;"></span>
-                    <span>Pemilihan Program Studi</span>
+            @if (! $prodiSelesai)
+                <div class="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-200/70 bg-slate-50/60 px-4 py-3">
+                    <div class="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                        <span style="width:8px;height:8px;border-radius:9999px;background-color:#08467d;display:inline-block;"></span>
+                        <span>Pemilihan Program Studi</span>
+                    </div>
+                    <a href="{{ route('program-studi.index') }}" class="pmb-btn-primary">
+                        <span>Lengkapi Data</span>
+                        <span>&rarr;</span>
+                    </a>
                 </div>
-                <a href="{{ route('program-studi.index') }}" class="pmb-btn-primary">
-                    <span>Lengkapi Data</span>
-                    <span>&rarr;</span>
-                </a>
-            </div>
-
-            <div class="mt-5">
-                <div class="mb-3 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                    <span>&#9776;</span>
-                    <span>Langkah-Langkah Pendaftaran</span>
+            @else
+                <div class="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-amber-200/80 bg-amber-50/50 px-4 py-3">
+                    <div class="flex items-center gap-2 text-xs font-semibold text-amber-900">
+                        <span style="width:8px;height:8px;border-radius:9999px;background-color:#d97706;display:inline-block;"></span>
+                        <span>Menunggu Persetujuan Admin</span>
+                    </div>
+                    <span class="rounded-md bg-amber-100 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-amber-800">
+                        Menunggu Verifikasi
+                    </span>
                 </div>
+            @endif
 
                 <div class="space-y-2.5">
                     <div class="flex items-center justify-between rounded-xl border border-emerald-200/80 bg-emerald-50/30 px-4 py-3">
@@ -779,6 +785,104 @@
     </main>
 </body>
 </html>
+
+        <div id="modalDetailPendaftaran" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/50 p-4 backdrop-blur-[1px]" onclick="if (event.target === this) tutupModalDetailPendaftaran()">
+        <div class="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-slate-200 bg-white p-5 shadow-xl sm:p-6">
+            <div class="flex items-start justify-between gap-3 border-b border-slate-100 pb-3.5">
+                <div>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <h3 class="text-sm font-bold text-slate-900 sm:text-base">Detail Pendaftaran PMB</h3>
+                        <span class="rounded-full bg-slate-100 px-2.5 py-0.5 text-[11px] font-semibold text-slate-700">Periode 2026/2027</span>
+                    </div>
+                    <p class="mt-0.5 text-[11px] text-slate-500">Ringkasan status administrasi, pilihan program studi, dan kelengkapan berkas calon mahasiswa.</p>
+                </div>
+                <button type="button" onclick="tutupModalDetailPendaftaran()" class="rounded-lg px-2 py-1 text-sm font-semibold text-slate-400 hover:bg-slate-100 hover:text-slate-700">&times;</button>
+            </div>
+
+            <div class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
+                <div class="rounded-xl border border-slate-200/80 bg-slate-50/70 p-3">
+                    <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Nomor Registrasi</div>
+                    <div class="mt-1 text-xs font-bold text-slate-900">{{ $noRegistrasi }}</div>
+                </div>
+                <div class="rounded-xl border border-slate-200/80 bg-slate-50/70 p-3">
+                    <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">No. Ujian</div>
+                    <div class="mt-1 text-xs font-bold text-slate-900">{{ $noUjian }}</div>
+                </div>
+                <div class="rounded-xl border border-slate-200/80 bg-slate-50/70 p-3">
+                    <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Status Pendaftaran</div>
+                    <div class="mt-1 text-xs font-bold text-amber-700">{{ $prodiSelesai ? 'Menunggu Persetujuan Admin' : 'Pengisian Data' }}</div>
+                </div>
+            </div>
+
+            <div class="mt-4 rounded-xl border border-slate-200/80 p-4">
+                <div class="mb-2.5 flex items-center justify-between gap-2">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500">Pilihan Program Studi</h4>
+                    <span class="text-[11px] font-semibold text-[#08467d]">{{ $prodiSelesai ? 'Terpilih' : 'Belum Dipilih' }}</span>
+                </div>
+                @if ($prodiSelesai)
+                    <div class="grid grid-cols-1 gap-2.5 text-xs sm:grid-cols-2">
+                        <div>
+                            <span class="text-slate-400">Fakultas:</span>
+                            <span class="ml-1 font-semibold text-slate-800">{{ $user->fakultas ?? '-' }}</span>
+                        </div>
+                        <div>
+                            <span class="text-slate-400">Program Pendidikan:</span>
+                            <span class="ml-1 font-semibold text-slate-800">{{ $user->program_pendidikan ?? '-' }}</span>
+                        </div>
+                        <div>
+                            <span class="text-slate-400">Program Studi:</span>
+                            <span class="ml-1 font-semibold text-slate-800">{{ $user->pilihan_prodi }}</span>
+                        </div>
+                        <div>
+                            <span class="text-slate-400">Sistem Kuliah:</span>
+                            <span class="ml-1 font-semibold text-emerald-700">{{ $user->sistem_kuliah ?? '-' }}</span>
+                        </div>
+                    </div>
+                @else
+                    <p class="text-xs text-slate-500">Anda belum menentukan pilihan program studi.</p>
+                @endif
+            </div>
+
+            <div class="mt-4 rounded-xl border border-slate-200/80 p-4">
+                <div class="mb-2.5 flex items-center justify-between gap-2">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500">Kelengkapan Data &amp; Berkas</h4>
+                    <span class="text-xs font-bold text-[#08467d]">{{ $progresPendaftaranPct }}%</span>
+                </div>
+                <div class="grid grid-cols-1 gap-2 text-xs sm:grid-cols-2">
+                    <div class="flex items-center justify-between rounded-lg bg-slate-50 px-3 py-2">
+                        <span class="text-slate-700">Pilihan Program Studi</span>
+                        <span class="font-semibold {{ $prodiSelesai ? 'text-emerald-700' : 'text-amber-700' }}">{{ $prodiSelesai ? 'Lengkap' : 'Belum' }}</span>
+                    </div>
+                    <div class="flex items-center justify-between rounded-lg bg-slate-50 px-3 py-2">
+                        <span class="text-slate-700">Data Pribadi</span>
+                        <span class="font-semibold {{ $bioSelesai ? 'text-emerald-700' : 'text-amber-700' }}">{{ $bioSelesai ? 'Lengkap' : 'Belum' }}</span>
+                    </div>
+                    <div class="flex items-center justify-between rounded-lg bg-slate-50 px-3 py-2">
+                        <span class="text-slate-700">Data Keluarga</span>
+                        <span class="font-semibold {{ $famSelesai ? 'text-emerald-700' : 'text-amber-700' }}">{{ $famSelesai ? 'Lengkap' : 'Belum' }}</span>
+                    </div>
+                    <div class="flex items-center justify-between rounded-lg bg-slate-50 px-3 py-2">
+                        <span class="text-slate-700">Riwayat Pendidikan</span>
+                        <span class="font-semibold {{ $eduSelesai ? 'text-emerald-700' : 'text-amber-700' }}">{{ $eduSelesai ? 'Lengkap' : 'Belum' }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-200/80 bg-slate-50/70 px-4 py-3 text-xs">
+                <div>
+                    <span class="text-slate-400">No. Tagihan:</span>
+                    <span class="ml-1 font-semibold text-slate-800">-</span>
+                </div>
+                <span class="rounded-md bg-amber-100 px-2.5 py-0.5 text-[11px] font-bold text-amber-800">Belum Dibayar</span>
+            </div>
+
+            <div class="mt-5 flex items-center justify-end gap-2 border-t border-slate-100 pt-3.5">
+                <button type="button" onclick="tutupModalDetailPendaftaran()" style="background-color: #08467d; color: #ffffff;" class="rounded-lg bg-[#08467d] px-4 py-2 text-xs font-semibold text-white hover:bg-[#063661]">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
 
     <div id="modalUploadFoto" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/50 p-4 backdrop-blur-[1px]">
         <div class="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl border border-slate-200 bg-white p-5 shadow-xl">
@@ -870,4 +974,24 @@
             bukaModalFoto();
         });
         @enderror
-    </script>
+    
+        function bukaModalDetailPendaftaran() {
+            const modal = document.getElementById('modalDetailPendaftaran');
+            if (!modal) return;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function tutupModalDetailPendaftaran() {
+            const modal = document.getElementById('modalDetailPendaftaran');
+            if (!modal) return;
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                tutupModalDetailPendaftaran();
+                tutupModalFoto();
+            }
+        });    </script>
