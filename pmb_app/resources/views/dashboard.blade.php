@@ -1,3 +1,26 @@
+                @php
+                    $prodiSelesai = !empty($user->pilihan_prodi);
+                    $bioSelesai = (bool) ($pribadiSelesai ?? false);
+                    $famSelesai = (bool) ($keluargaSelesai ?? false);
+                    $eduSelesai = (bool) ($pendidikanSelesai ?? false);
+                    $langkah2Selesai = $prodiSelesai && $bioSelesai && $famSelesai && $eduSelesai;
+                    $subteksLangkah2 = $subteksLangkah2 ?? ($langkah2Selesai
+                        ? 'Pilihan program studi dan seluruh data tambahan sudah lengkap.'
+                        : 'Lengkapi pilihan program studi serta data pribadi, keluarga, dan pendidikan.');
+                    $noRegistrasi = $langkah2Selesai
+                        ? 'PMB-' . now()->year . '-' . str_pad((string) $user->id, 5, '0', STR_PAD_LEFT)
+                        : 'Belum terbit';
+                    $noUjian = '-';
+
+                    $progresPendaftaranPct = 25
+                        + ($prodiSelesai ? 25 : 0)
+                        + ($bioSelesai ? 20 : 0)
+                        + ($famSelesai ? 15 : 0)
+                        + ($eduSelesai ? 15 : 0);
+
+                    $progresPendaftaranPct = min(100, (int) $progresPendaftaranPct);
+                @endphp
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -363,7 +386,7 @@
                             </div>
                             <div>
                                 <div class="text-[11px] text-slate-400">Nomor Registrasi</div>
-                                <div class="font-bold" style="color:#08467d;">Belum terbit</div>
+                                <div class="font-bold" style="color:#08467d;">{{ $noRegistrasi }}</div>
                             </div>
                         </div>
 
@@ -582,18 +605,24 @@
                 <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
                     <div class="rounded-xl border border-slate-200/80 bg-slate-50/60 p-3.5">
                         <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Nomor Registrasi</div>
-                        <div class="mt-1 text-sm font-extrabold text-slate-800">Belum terbit</div>
+                        <div class="mt-1 text-sm font-extrabold text-slate-800">{{ $noRegistrasi }}</div>
                     </div>
                     <div class="rounded-xl border border-slate-200/80 bg-slate-50/60 p-3.5">
                         <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">No. Ujian</div>
-                        <div class="mt-1 text-sm font-extrabold text-slate-800">-</div>
+                        <div class="mt-1 text-sm font-extrabold text-slate-800">{{ $noUjian }}</div>
                     </div>
                     <div class="rounded-xl border border-slate-200/80 bg-slate-50/60 p-3.5">
                         <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Status</div>
                         <div class="mt-1">
-                            <span class="inline-flex items-center gap-1 rounded-md bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-800">
-                                &#9200; Pengisian Data
-                            </span>
+                            @if ($langkah2Selesai)
+                                <span class="inline-flex items-center gap-1 rounded-md bg-sky-100 px-2 py-0.5 text-xs font-semibold text-sky-800">
+                                    &#8987; Menunggu Verifikasi
+                                </span>
+                            @else
+                                <span class="inline-flex items-center gap-1 rounded-md bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-800">
+                                    &#9200; Pengisian Data
+                                </span>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -676,20 +705,6 @@
                     <h2 class="text-base font-bold text-slate-900">Progres Pendaftaran</h2>
                     <p class="text-xs text-slate-500">Pelengkapan data &amp; tahapan pendaftaran</p>
                 </div>
-                @php
-                    $prodiSelesai = !empty($user->pilihan_prodi);
-                    $bioSelesai = (bool) ($pribadiSelesai ?? false);
-                    $famSelesai = (bool) ($keluargaSelesai ?? false);
-                    $eduSelesai = (bool) ($pendidikanSelesai ?? false);
-
-                    $progresPendaftaranPct = 25
-                        + ($prodiSelesai ? 25 : 0)
-                        + ($bioSelesai ? 20 : 0)
-                        + ($famSelesai ? 15 : 0)
-                        + ($eduSelesai ? 15 : 0);
-
-                    $progresPendaftaranPct = min(100, (int) $progresPendaftaranPct);
-                @endphp
                 <div class="text-right">
                     <div class="text-xl font-extrabold" style="color:#08467d;">{{ $progresPendaftaranPct }}%</div>
                     <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Selesai</div>
@@ -729,20 +744,6 @@
                         <span class="rounded bg-emerald-100 px-2 py-0.5 text-[10px] font-bold uppercase text-emerald-700">Selesai</span>
                     </div>
 
-                    @php
-                        $langkah2Selesai = $prodiSelesai && $bioSelesai && $famSelesai && $eduSelesai;
-                        $belumDilengkapi = array_values(array_filter([
-                            !$prodiSelesai ? 'pilihan prodi' : null,
-                            !$bioSelesai ? 'biodata' : null,
-                            !$famSelesai ? 'keluarga' : null,
-                            !$eduSelesai ? 'pendidikan' : null,
-                        ]));
-                        $subteksLangkah2 = $langkah2Selesai
-                            ? 'Pilihan prodi, biodata, keluarga, dan pendidikan sudah lengkap'
-                            : (count($belumDilengkapi) > 0
-                                ? ($prodiSelesai ? 'Prodi terpilih · Lengkapi ' : 'Lengkapi ') . implode(', ', $belumDilengkapi)
-                                : 'Lengkapi biodata, keluarga, pendidikan, dan pilihan prodi');
-                    @endphp
                     <div class="{{ $langkah2Selesai ? 'flex items-center justify-between rounded-xl border border-emerald-200/80 bg-emerald-50/40 px-4 py-3' : 'pmb-step-active flex items-center justify-between rounded-xl px-4 py-3' }}">
                         <div class="flex items-center gap-3">
                             @if ($langkah2Selesai)
