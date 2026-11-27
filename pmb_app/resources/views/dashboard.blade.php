@@ -608,7 +608,7 @@
                     <div>Periode: <span class="font-semibold text-slate-700">2026/2027</span></div>
                     <span class="pmb-pill-blue">
                         <span style="width:6px;height:6px;border-radius:9999px;background-color:#08467d;"></span>
-                        <span>PENGISIAN DATA</span>
+                        {{ strtoupper($prodiSelesai ? 'Menunggu Persetujuan Admin' : 'Pengisian Data') }}
                     </span>
                 </div>
 
@@ -632,7 +632,7 @@
                                 </span>
                             @else
                                 <span class="inline-flex items-center gap-1 rounded-md bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-800">
-                                    &#9200; Pengisian Data
+                                    &#9200; {{ $prodiSelesai ? 'Menunggu Persetujuan Admin' : 'Pengisian Data' }}
                                 </span>
                             @endif
                         </div>
