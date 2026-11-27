@@ -17,6 +17,21 @@ Route::get('/program-studi', function () {
     return view('program-studi.index');
 })->name('program-studi.index');
 
+Route::post('/program-studi/pilih', function (Request $request) {
+    $validated = $request->validate([
+        'fakultas' => ['required', 'string', 'max:255'],
+        'program_pendidikan' => ['required', 'string', 'max:255'],
+        'pilihan_prodi' => ['required', 'string', 'max:255'],
+        'sistem_kuliah' => ['required', 'string', 'max:255'],
+    ]);
+
+    $request->user()->update($validated);
+
+    return redirect()
+        ->route('dashboard')
+        ->with('status', 'Pilihan program studi berhasil disimpan.');
+})->middleware(['auth'])->name('program-studi.pilih');
+
 Route::get('/jalur-pendaftaran', function () {
     return view('jalur-pendaftaran.index');
 })->name('jalur-pendaftaran.index');
