@@ -11,7 +11,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
             <div class="flex items-center gap-3 min-w-0">
                 <span class="h-10 w-10 rounded-full bg-white p-0.5 flex items-center justify-center overflow-hidden shrink-0">
-                    <img src="{{ asset('images/logo-ipwija-header.png') }}" alt="Logo IPWIJA" class="h-full w-full object-contain">
+                    <img src="{{ asset('images/logo-ipwija-header.png') }}" alt="Logo IPWIJA" class="h-full w-full object-contain translate-x-0.5">
                 </span>
                 <span class="font-extrabold text-sm sm:text-base truncate">PMB IPWIJA &bull; ADMIN</span>
             </div>
