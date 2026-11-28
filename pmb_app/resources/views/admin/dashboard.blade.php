@@ -7,16 +7,14 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-screen bg-slate-100 text-slate-800 antialiased">
-    <nav class="bg-[#005f92] text-white">
+    <nav class="bg-[#125894] text-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
             <div class="flex items-center gap-3 min-w-0">
-                <span class="h-10 w-10 rounded-full bg-white p-0.5 flex items-center justify-center overflow-hidden shrink-0">
-                    <img src="{{ asset('images/logo-ipwija-header.png') }}" alt="Logo IPWIJA" class="h-full w-full object-contain translate-x-0.5">
-                </span>
+                <span class="h-12 w-12 rounded-full p-1 flex items-center justify-center overflow-hidden shrink-0" style="background: rgba(255, 255, 255, 0.95);"><img src="{{ asset('images/logo-ipwija-header.png') }}" alt="Logo Universitas IPWIJA" class="h-full w-full object-contain rounded-full block"></span>
                 <span class="font-extrabold text-sm sm:text-base truncate">PMB IPWIJA &bull; ADMIN</span>
             </div>
             <div class="flex items-center gap-3 shrink-0">
-                <span class="hidden sm:inline text-xs text-sky-100">{{ Auth::user()->email }}</span>
+                <span class="hidden sm:inline text-xs text-[#dbeafe]">{{ Auth::user()->email }}</span>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="rounded-lg bg-white/15 hover:bg-white/25 px-3 py-1.5 text-xs font-semibold cursor-pointer">
@@ -27,11 +25,11 @@
         </div>
     </nav>
 
-    <header class="bg-gradient-to-r from-[#0077b6] to-[#004e7c] text-white py-6">
+    <header class="bg-gradient-to-r from-[#08467d] to-[#063560] text-white py-6">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
                 <h1 class="text-xl sm:text-2xl font-extrabold">Halo, {{ Auth::user()->name }}</h1>
-                <p class="text-xs sm:text-sm text-sky-100 mt-1">Dashboard Admin PMB Universitas IPWIJA (Periode 2026/2027)</p>
+                <p class="text-xs sm:text-sm text-[#dbeafe] mt-1">Dashboard Admin PMB Universitas IPWIJA (Periode 2026/2027)</p>
             </div>
             <form method="POST" action="{{ route('logout') }}" class="shrink-0">
                 @csrf
@@ -46,7 +44,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
                 <p class="text-xs text-slate-400">Total Akun</p>
-                <p class="text-2xl font-extrabold text-[#0077b6] mt-1">{{ $totalAkun }}</p>
+                <p class="text-2xl font-extrabold text-[#08467d] mt-1">{{ $totalAkun }}</p>
             </div>
             <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
                 <p class="text-xs text-slate-400">Calon Mahasiswa</p>
@@ -73,7 +71,7 @@
             @endphp
             @foreach ($tabs as $key => $label)
                 <a href="{{ route('admin.dashboard', ['tab' => $key]) }}"
-                   class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition {{ $tab === $key ? 'bg-[#0077b6] text-white shadow-sm' : 'text-slate-600 hover:bg-slate-100' }}">
+                   class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition {{ $tab === $key ? 'bg-[#08467d] text-white shadow-sm' : 'text-slate-600 hover:bg-slate-100' }}">
                     {{ $label }}
                 </a>
             @endforeach
@@ -84,19 +82,19 @@
                 <h2 class="text-sm font-bold text-slate-800">Alur Kerja Admin PMB</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mt-3 text-xs">
                     <div class="rounded-xl bg-slate-50 border border-slate-200 p-3.5">
-                        <p class="font-bold text-[#0077b6]">1. Ringkasan</p>
+                        <p class="font-bold text-[#08467d]">1. Ringkasan</p>
                         <p class="text-slate-600 mt-1">Pantau jumlah akun, calon mahasiswa, dan status seleksi.</p>
                     </div>
                     <div class="rounded-xl bg-slate-50 border border-slate-200 p-3.5">
-                        <p class="font-bold text-[#0077b6]">2. Calon Mahasiswa</p>
+                        <p class="font-bold text-[#08467d]">2. Calon Mahasiswa</p>
                         <p class="text-slate-600 mt-1">Cari nama, email, atau NIK serta filter kelengkapan data.</p>
                     </div>
                     <div class="rounded-xl bg-slate-50 border border-slate-200 p-3.5">
-                        <p class="font-bold text-[#0077b6]">3. Detail Pendaftar</p>
+                        <p class="font-bold text-[#08467d]">3. Detail Pendaftar</p>
                         <p class="text-slate-600 mt-1">Periksa biodata, data keluarga, dan riwayat pendidikan.</p>
                     </div>
                     <div class="rounded-xl bg-slate-50 border border-slate-200 p-3.5">
-                        <p class="font-bold text-[#0077b6]">4. Pengaturan Seleksi</p>
+                        <p class="font-bold text-[#08467d]">4. Pengaturan Seleksi</p>
                         <p class="text-slate-600 mt-1">Cek status periode seleksi yang sedang berjalan.</p>
                     </div>
                 </div>
@@ -126,14 +124,14 @@
                             name="q"
                             value="{{ $search }}"
                             placeholder="Cari nama, email, NIK..."
-                            class="w-full sm:w-56 rounded-xl border-slate-300 text-xs sm:text-sm focus:border-[#0077b6] focus:ring-[#0077b6]"
+                            class="w-full sm:w-56 rounded-xl border-slate-300 text-xs sm:text-sm focus:border-[#08467d] focus:ring-[#08467d]"
                         >
-                        <select name="status" class="rounded-xl border-slate-300 text-xs sm:text-sm focus:border-[#0077b6] focus:ring-[#0077b6]">
+                        <select name="status" class="rounded-xl border-slate-300 text-xs sm:text-sm focus:border-[#08467d] focus:ring-[#08467d]">
                             <option value="">Semua Kelengkapan</option>
                             <option value="lengkap" @selected($statusFilter === 'lengkap')>Data Lengkap</option>
                             <option value="belum_lengkap" @selected($statusFilter === 'belum_lengkap')>Belum Lengkap</option>
                         </select>
-                        <button type="submit" class="rounded-xl bg-[#0077b6] hover:bg-[#005f92] text-white px-4 py-2 text-xs sm:text-sm font-semibold cursor-pointer shrink-0">
+                        <button type="submit" class="rounded-xl bg-[#08467d] hover:bg-[#125894] text-white px-4 py-2 text-xs sm:text-sm font-semibold cursor-pointer shrink-0">
                             Filter
                         </button>
                         @if ($search !== '' || $statusFilter !== '')
@@ -206,7 +204,7 @@
                                     </td>
                                     <td class="px-5 py-4 text-right">
                                         <a href="{{ route('admin.dashboard', ['tab' => $tab, 'q' => $search, 'status' => $statusFilter, 'detail' => $item->id]) }}#panel-detail"
-                                           class="inline-flex items-center rounded-xl bg-[#0077b6] hover:bg-[#005f92] text-white px-3.5 py-2 text-xs font-semibold transition">
+                                           class="inline-flex items-center rounded-xl bg-[#08467d] hover:bg-[#125894] text-white px-3.5 py-2 text-xs font-semibold transition">
                                             Detail &amp; Verifikasi
                                         </a>
                                     </td>
@@ -265,7 +263,7 @@
                     </div>
                     <div class="rounded-xl bg-slate-50 border border-slate-200 p-4">
                         <p class="text-slate-400">Total Pendaftar Terdaftar</p>
-                        <p class="text-sm font-bold text-[#0077b6] mt-1">{{ $totalCalonMahasiswa }} Calon Mahasiswa</p>
+                        <p class="text-sm font-bold text-[#08467d] mt-1">{{ $totalCalonMahasiswa }} Calon Mahasiswa</p>
                     </div>
                 </div>
             </section>
@@ -275,7 +273,7 @@
             <section id="panel-detail" class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-6">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-slate-200 pb-4">
                     <div>
-                        <span class="text-xs font-bold uppercase tracking-wider text-[#0077b6]">Detail Calon Mahasiswa</span>
+                        <span class="text-xs font-bold uppercase tracking-wider text-[#08467d]">Detail Calon Mahasiswa</span>
                         <h2 class="text-lg font-extrabold text-slate-800 mt-0.5">{{ \Illuminate\Support\Str::title($pendaftarDetail->name) }}</h2>
                         <p class="text-xs text-slate-500">{{ $pendaftarDetail->email }}</p>
                         @php
