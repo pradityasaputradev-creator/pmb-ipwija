@@ -77,6 +77,9 @@ Route::post('/dashboard/foto', function (Request $request) {
 
 Route::get('/dashboard', function (Request $request) {
     $user = $request->user();
+    if ($user?->role === 'admin') {
+        return redirect()->route('admin.dashboard');
+    }
     $daftarKeluarga = Keluarga::where('user_id', $user->id)
         ->orderBy('id')
         ->get();
