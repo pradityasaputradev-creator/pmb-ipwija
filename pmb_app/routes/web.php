@@ -1,4 +1,5 @@
-<?php
+﻿<?php
+use App\Http\Controllers\Admin\DashboardController;
 
 use App\Http\Controllers\KeluargaController;
 use App\Http\Controllers\PendidikanController;
@@ -92,75 +93,9 @@ Route::get('/dashboard', function (Request $request) {
     ]);
 })->middleware(['auth'])->name('dashboard');
 
-Route::get('/admin/dashboard', function (Request $request) {
-    if ($request->user()->role !== 'admin') {
-        abort(403, 'Akses khusus Admin PMB.');
-    }
-
-    $tab = $request->query('tab', 'ringkasan');
-    $search = trim((string) $request->query('q', ''));
-    $statusFilter = trim((string) $request->query('status', ''));
-
-    $totalAkun = User::count();
-    $totalCalonMahasiswa = User::where(function ($query) {
-        $query->whereNull('role')->orWhere('role', '!=', 'admin');
-    })->count();
-
-    $pendaftarQuery = User::query()
-        ->where(function ($query) {
-            $query->whereNull('role')->orWhere('role', '!=', 'admin');
-        })
-        ->withCount(['keluargas', 'pendidikans']);
-
-    if ($search !== '') {
-        $pendaftarQuery->where(function ($query) use ($search) {
-            $query->where('name', 'like', "%{$search}%")
-                ->orWhere('email', 'like', "%{$search}%")
-                ->orWhere('nik', 'like', "%{$search}%");
-        });
-    }
-
-    if ($statusFilter === 'lengkap') {
-        $pendaftarQuery
-            ->whereNotNull('nik')->where('nik', '!=', '')
-            ->whereNotNull('no_hp')->where('no_hp', '!=', '')
-            ->whereNotNull('alamat')->where('alamat', '!=', '')
-            ->has('keluargas')
-            ->has('pendidikans');
-    } elseif ($statusFilter === 'belum_lengkap') {
-        $pendaftarQuery->where(function ($query) {
-            $query->whereNull('nik')->orWhere('nik', '')
-                ->orWhereNull('no_hp')->orWhere('no_hp', '')
-                ->orWhereNull('alamat')->orWhere('alamat', '')
-                ->orDoesntHave('keluargas')
-                ->orDoesntHave('pendidikans');
-        });
-    }
-
-    $pendaftar = $pendaftarQuery
-        ->latest('id')
-        ->get();
-
-    $pendaftarDetail = null;
-    if ($request->filled('detail')) {
-        $pendaftarDetail = User::with(['keluargas', 'pendidikans', 'fotoCalonMahasiswa'])
-            ->where(function ($query) {
-                $query->whereNull('role')->orWhere('role', '!=', 'admin');
-            })
-            ->whereKey($request->query('detail'))
-            ->first();
-    }
-
-    return view('admin.dashboard', [
-        'tab' => $tab,
-        'search' => $search,
-        'statusFilter' => $statusFilter,
-        'totalAkun' => $totalAkun,
-        'totalCalonMahasiswa' => $totalCalonMahasiswa,
-        'pendaftar' => $pendaftar,
-        'pendaftarDetail' => $pendaftarDetail,
-    ]);
-})->middleware(['auth'])->name('admin.dashboard');
+Route::get('/admin/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth'])
+    ->name('admin.dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

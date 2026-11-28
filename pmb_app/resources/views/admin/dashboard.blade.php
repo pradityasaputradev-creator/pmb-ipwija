@@ -26,9 +26,17 @@
     </nav>
 
     <header class="bg-gradient-to-r from-[#0077b6] to-[#004e7c] text-white py-6">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 class="text-xl sm:text-2xl font-extrabold">Halo, {{ Auth::user()->name }}</h1>
-            <p class="text-xs sm:text-sm text-sky-100 mt-1">Dashboard Admin PMB Universitas IPWIJA (Periode 2026/2027)</p>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+                <h1 class="text-xl sm:text-2xl font-extrabold">Halo, {{ Auth::user()->name }}</h1>
+                <p class="text-xs sm:text-sm text-sky-100 mt-1">Dashboard Admin PMB Universitas IPWIJA (Periode 2026/2027)</p>
+            </div>
+            <form method="POST" action="{{ route('logout') }}" class="shrink-0">
+                @csrf
+                <button type="submit" class="inline-flex items-center rounded-xl bg-white/15 hover:bg-white/25 border border-white/20 px-3.5 py-2 text-xs font-semibold text-white transition cursor-pointer">
+                    Keluar dari Akun
+                </button>
+            </form>
         </div>
     </header>
 
@@ -151,6 +159,7 @@
                                     $biodataLengkap = !empty($item->nik) && !empty($item->no_hp) && !empty($item->alamat);
                                     $keluargaLengkap = $item->keluargas_count > 0;
                                     $pendidikanLengkap = $item->pendidikans_count > 0;
+                                    $semuaLengkap = $biodataLengkap && $keluargaLengkap && $pendidikanLengkap;
                                 @endphp
                                 <tr class="hover:bg-slate-50/80 transition">
                                     <td class="px-5 py-4">
@@ -161,6 +170,11 @@
                                         @endif
                                     </td>
                                     <td class="px-5 py-4">
+                                        <div class="mb-1.5">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold {{ $semuaLengkap ? 'bg-emerald-600 text-white' : 'bg-amber-500 text-white' }}">
+                                                {{ $semuaLengkap ? 'Lengkap' : 'Belum Lengkap' }}
+                                            </span>
+                                        </div>
                                         <div class="flex flex-wrap gap-1.5">
                                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold {{ $biodataLengkap ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700' }}">
                                                 Biodata: {{ $biodataLengkap ? 'Lengkap' : 'Belum' }}
@@ -172,6 +186,13 @@
                                                 Pendidikan ({{ $item->pendidikans_count }})
                                             </span>
                                         </div>
+                                        <p class="text-xs mt-1.5 {{ !empty($item->pilihan_prodi) ? 'text-slate-700 font-medium' : 'text-slate-400' }}">
+                                            @if (!empty($item->pilihan_prodi))
+                                                Prodi: {{ $item->pilihan_prodi }}{{ !empty($item->sistem_kuliah) ? ' &middot; ' . $item->sistem_kuliah : '' }}
+                                            @else
+                                                Prodi belum dipilih
+                                            @endif
+                                        </p>
                                     </td>
                                     <td class="px-5 py-4">
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600">
@@ -255,6 +276,23 @@
                         <span class="text-xs font-bold uppercase tracking-wider text-[#0077b6]">Detail Calon Mahasiswa</span>
                         <h2 class="text-lg font-extrabold text-slate-800 mt-0.5">{{ \Illuminate\Support\Str::title($pendaftarDetail->name) }}</h2>
                         <p class="text-xs text-slate-500">{{ $pendaftarDetail->email }}</p>
+                        @php
+                            $detailBiodataOk = !empty($pendaftarDetail->nik) && !empty($pendaftarDetail->no_hp) && !empty($pendaftarDetail->alamat);
+                            $detailKeluargaOk = $pendaftarDetail->keluargas->isNotEmpty();
+                            $detailPendidikanOk = $pendaftarDetail->pendidikans->isNotEmpty();
+                            $detailLengkap = $detailBiodataOk && $detailKeluargaOk && $detailPendidikanOk;
+                        @endphp
+                        <div class="flex flex-wrap items-center gap-2 mt-2">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold {{ $detailLengkap ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700' }}">
+                                {{ $detailLengkap ? 'Data Lengkap' : 'Data Belum Lengkap' }}
+                            </span>
+                            <span class="text-xs text-slate-600">
+                                Prodi: <strong class="text-slate-800">{{ $pendaftarDetail->pilihan_prodi ?? 'Belum dipilih' }}</strong>
+                                @if (!empty($pendaftarDetail->sistem_kuliah))
+                                    &bull; <span class="font-semibold text-slate-700">{{ $pendaftarDetail->sistem_kuliah }}</span>
+                                @endif
+                            </span>
+                        </div>
                     </div>
                     <a href="{{ route('admin.dashboard', ['tab' => $tab, 'q' => $search, 'status' => $statusFilter]) }}"
                        class="inline-flex items-center rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-700 px-3.5 py-2 text-xs font-semibold">
