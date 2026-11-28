@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 use App\Http\Controllers\Admin\DashboardController;
 
 use App\Http\Controllers\KeluargaController;
@@ -122,3 +122,4 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
